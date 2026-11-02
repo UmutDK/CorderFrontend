@@ -1,17 +1,17 @@
 # Contrat d'API — site Corder
 
-Ce document décrit ce que le frontend Angular attend du backend. La technologie du backend est libre (PHP pur, Laravel…) tant que les URL et les formats ci-dessous sont respectés.
+Ce document décrit ce que le frontend Angular attend du backend. Il est implémenté en PHP pur dans le dépôt backend (voir son README.md). Toute évolution doit être faite des deux côtés.
 
 Des exemples complets de réponses se trouvent dans `public/data/*.json` : le frontend les utilise tant que l'API n'existe pas. **Une réponse de l'API doit avoir exactement la même forme que ces fichiers.**
 
 ## Règles générales
 
-- **Base** : toutes les routes sont préfixées, par exemple `https://api.corder.be/v1`.
+- **Base** : en production, l'API est sur le même domaine que le site, à `https://corder.be/api`. Toutes les routes ci-dessous sont relatives à cette base. En local, elle est à `http://localhost:8000`.
 - **Format** : JSON en UTF-8 (`Content-Type: application/json; charset=utf-8`).
 - **Dates** : ISO 8601 **avec fuseau**, par exemple `2026-11-05T09:00:00+01:00`.
 - **Prix** : en euros TTC, nombre entier ou décimal, par exemple `45` ou `12.5`.
 - **Textes** : en clair. Le frontend n'interprète pas le HTML, sauf mention contraire.
-- **CORS** : autoriser l'origine du site (`https://corder.be`), plus `http://localhost:4200` et `http://localhost:4400` en développement.
+- **CORS** : seules les origines listées dans `CORS_ORIGINS` (fichier `.env` du backend) sont autorisées. En développement : `http://localhost:4200` et `http://localhost:4400`.
 - **Listes** : toujours renvoyées dans cette enveloppe :
 
 ```json
@@ -23,23 +23,38 @@ Des exemples complets de réponses se trouvent dans `public/data/*.json` : le fr
 
 `meta.total` est le nombre total d'éléments correspondant à la requête, avant `limit`. Il servira à la pagination des pages intérieures.
 
-- **Erreurs** : code HTTP adapté (`400`, `404`, `422`, `429`, `500`) avec ce corps :
+- **Erreurs** : code HTTP adapté (`400`, `404`, `405`, `409`, `422`, `429`, `500`) avec ce corps :
 
 ```json
 { "ok": false, "error": "validation_failed", "fields": { "email": "Adresse invalide" } }
 ```
 
-`fields` n'est requis que pour les erreurs de validation (`422`).
+`fields` n'est présent que pour les erreurs de validation (`422`).
+
+Codes `error` possibles :
+
+| Code | Statut | Cas |
+|---|---|---|
+| `invalid_json` | 400 | Corps de la requête illisible |
+| `not_found` | 404 | Route ou slug inconnu |
+| `method_not_allowed` | 405 | Mauvaise méthode HTTP |
+| `full` | 409 | Formation complète |
+| `closed` | 409 | Date limite d'inscription dépassée |
+| `already_registered` | 409 | Cette adresse e-mail est déjà inscrite à la formation |
+| `validation_failed` | 422 | Champs invalides, détail dans `fields` |
+| `too_many_requests` | 429 | Anti-spam : trop d'envois depuis la même adresse IP en une heure |
+| `server_error` | 500 | Erreur inattendue, journalisée côté serveur |
 
 ## Lecture (GET)
 
 ### `GET /articles`
 
-Actualités, de la plus récente à la plus ancienne.
+Actualités, de la plus récente à la plus ancienne, **sans les alertes**.
 
 | Paramètre | Type | Défaut | Rôle |
 |---|---|---|---|
-| `limit` | entier | 10 | Nombre maximum d'éléments |
+| `limit` | entier | aucun (tous) | Nombre maximum d'éléments, 200 au plus |
+| `category` | texte | aucun | Slug de catégorie |
 
 Élément (`Article`) :
 
@@ -55,7 +70,7 @@ Actualités, de la plus récente à la plus ancienne.
 | `image` | objet ou `null` | `{ "url": "https://…/photo.jpg", "alt": "Description" }` |
 | `featured` | booléen | Article mis en avant sur l'accueil. Un seul à la fois de préférence. |
 
-La page /actualites charge tous les articles et filtre par catégorie côté frontend. Au-delà d'une centaine d'articles, prévoir les paramètres `category` (slug), `page` et `limit`.
+La page /actualites charge tous les articles et filtre par catégorie côté frontend. Au-delà d'une centaine d'articles, il faudra ajouter un paramètre `page`.
 
 ### `GET /articles/{slug}`
 
@@ -115,6 +130,18 @@ Tous les champs de la liste, plus :
 | `registrationDeadline` | date ISO | Après cette date, le formulaire d'inscription est remplacé par un message |
 
 Si le slug n'existe pas, répondre `404`. Le frontend affiche alors « Cette formation est introuvable ».
+
+### `GET /team`
+
+Membres de l'équipe, dans l'ordre d'affichage.
+
+| Champ | Type | Description |
+|---|---|---|
+| `id` | entier | |
+| `firstName`, `lastName`, `role` | texte | |
+| `group` | texte | `board` (conseil d'administration) ou `staff` |
+| `email` | texte ou `null` | |
+| `photo` | texte ou `null` | URL de la photo ; sans photo, le frontend affiche les initiales |
 
 ### `GET /faq`
 
@@ -179,9 +206,9 @@ Les deux routes répondent `201` avec `{ "ok": true }` en cas de succès.
 - `licenceNumber` et `organization` peuvent valoir `null`.
 - **Côté backend :**
   - vérifier **au moment de l'enregistrement** qu'il reste une place et que la date limite n'est pas dépassée. Deux personnes peuvent valider en même temps : utiliser une transaction ou un verrou ;
-  - si c'est complet, répondre `409` avec `{ "ok": false, "error": "full" }` ;
+  - si c'est complet, répondre `409` avec `{ "ok": false, "error": "full" }` ; après la date limite, `409` avec `closed` ; si l'adresse e-mail est déjà inscrite, `409` avec `already_registered` ;
   - envoyer un e-mail de confirmation avec les informations pratiques, et le lien de connexion si la formation est en ligne ;
-  - décrémenter `seatsLeft`.
+  - `seatsLeft` n'est pas stocké : il est calculé (`capacity` moins le nombre d'inscriptions).
 
 ### `POST /newsletter/subscriptions`
 
@@ -189,15 +216,17 @@ Les deux routes répondent `201` avec `{ "ok": true }` en cas de succès.
 { "email": "marie@example.be", "consent": true }
 ```
 
-- **Double confirmation recommandée (RGPD)** : envoyer un e-mail avec un lien de confirmation avant d'activer l'inscription.
+- **Double confirmation (RGPD)** : un e-mail contient un lien vers `GET /newsletter/confirm?token=…`. L'inscription n'est active qu'après ce clic. Ce lien affiche lui-même une petite page HTML « Inscription confirmée ».
 - Si l'adresse est déjà inscrite, répondre quand même `201` avec `{ "ok": true }`, pour ne pas révéler qui est inscrit.
 
 ## Brancher le frontend sur l'API
 
-Dans `src/app/app.config.ts`, ajouter :
+La source des données dépend de la configuration de build (`src/environments/`) :
 
-```ts
-{ provide: API_CONFIG, useValue: { baseUrl: 'https://api.corder.be/v1', mock: false } },
-```
+| Commande | Données |
+|---|---|
+| `npm start` | Fichiers JSON de `public/data` (aucun backend nécessaire) |
+| `npm run start:api` | API PHP locale sur `http://localhost:8000` |
+| `ng build` (production) | `/api` sur le même domaine |
 
 Aucun composant n'est à modifier : tous les appels passent par `src/app/core/api/api.service.ts`.

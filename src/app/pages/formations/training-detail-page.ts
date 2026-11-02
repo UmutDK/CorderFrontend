@@ -1,4 +1,5 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -67,6 +68,8 @@ export class TrainingDetailPage {
   });
 
   protected readonly status = signal<SubmitStatus>('idle');
+  /** Code d'erreur renvoyé par l'API (already_registered, too_many_requests…), voir docs/api-contract.md */
+  protected readonly errorCode = signal<string | null>(null);
 
   protected readonly form = new FormGroup({
     firstName: new FormControl('', { nonNullable: true, validators: Validators.required }),
@@ -125,10 +128,20 @@ export class TrainingDetailPage {
         next: () => {
           this.status.set('sent');
           // Le backend a décompté la place : on relit la fiche pour afficher le bon nombre
-          this.trainings.bySlug(slug).subscribe({ next: (t) => this.refreshed.set(t), error: () => {} });
+          this.reload(slug);
         },
-        error: () => this.status.set('error'),
+        error: (err: unknown) => {
+          const code = err instanceof HttpErrorResponse ? err.error?.error : null;
+          this.errorCode.set(typeof code === 'string' ? code : null);
+          this.status.set('error');
+          // Complet ou clôturé entre-temps : la fiche relue remplace le formulaire par le bon message
+          if (code === 'full' || code === 'closed') this.reload(slug);
+        },
       });
+  }
+
+  private reload(slug: string): void {
+    this.trainings.bySlug(slug).subscribe({ next: (t) => this.refreshed.set(t), error: () => {} });
   }
 
   /** Télécharge un fichier .ics pour ajouter la formation à son agenda (Outlook, Google, Apple…) */

@@ -157,8 +157,19 @@
 
                     @if (status() === 'error') {
                       <p class="form__error" role="alert">
-                        L’inscription a échoué. Réessayez dans un instant ou
-                        <a routerLink="/contact">contactez-nous</a>.
+                        @switch (errorCode()) {
+                          @case ('already_registered') {
+                            Vous êtes déjà inscrit à cette formation avec cette adresse e-mail.
+                          }
+                          @case ('too_many_requests') {
+                            Trop de tentatives en peu de temps. Réessayez dans une heure ou
+                            <a routerLink="/contact">contactez-nous</a>.
+                          }
+                          @default {
+                            L’inscription a échoué. Réessayez dans un instant ou
+                            <a routerLink="/contact">contactez-nous</a>.
+                          }
+                        }
                       </p>
                     }
 
