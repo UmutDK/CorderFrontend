@@ -1,0 +1,20 @@
+@let a = article();
+
+<div class="card__media" [class.card__media--empty]="!a.image">
+  @if (a.image) {
+    <img [src]="a.image.url" [alt]="a.image.alt" width="800" height="500" loading="lazy" />
+  } @else {
+    <app-icon [name]="icon()" [size]="40" [stroke]="1.5" />
+  }
+</div>
+
+<div class="card__body">
+  <div class="card__meta">
+    <span class="card__cat">{{ a.category.label }}</span>
+    <time [attr.datetime]="a.publishedAt">{{ a.publishedAt | date: 'd MMM y' }}</time>
+  </div>
+  <h3>
+    <a class="card__link" [routerLink]="['/actualites', a.slug]">{{ a.title }}</a>
+  </h3>
+  <p>{{ a.excerpt }}</p>
+</div>

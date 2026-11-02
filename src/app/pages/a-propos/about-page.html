@@ -1,0 +1,179 @@
+<app-page-header
+  heading="À propos de Corder"
+  eyebrow="Coordination Recherche et Développement Rural"
+  lead="Depuis 1994, l’ASBL Corder fait le lien entre la recherche scientifique et le monde rural wallon, pour une protection durable et intégrée des végétaux."
+  [crumbs]="[{ label: 'À propos' }]"
+/>
+
+<!-- Présentation -->
+<section class="section surface-white" aria-labelledby="intro-title">
+  <div class="container intro">
+    <div class="intro__text">
+      <span class="eyebrow">Qui sommes-nous ?</span>
+      <h2 id="intro-title">Un organe d’avis indépendant, au service du monde rural</h2>
+      <p>
+        L’ASBL Corder s’intègre dans une série de démarches visant à favoriser la protection durable
+        des végétaux en Wallonie. Elle s’appuie sur des connaissances scientifiques et pratiques pour
+        conseiller de manière indépendante, et anime les échanges sur l’usage des produits de
+        protection des plantes et sur la santé des végétaux.
+      </p>
+      <p>
+        Installée sur le campus de Louvain-la-Neuve, l’équipe réunit une vingtaine de personnes :
+        chargés de mission, techniciens de laboratoire, informaticiens et personnel administratif.
+      </p>
+
+      <h3 class="intro__subtitle">Nous nous adressons aux</h3>
+      <ul class="audiences">
+        @for (audience of audiences; track audience) {
+          <li>{{ audience }}</li>
+        }
+      </ul>
+    </div>
+
+    <aside class="facts" aria-label="Corder en bref">
+      <h3>Corder en bref</h3>
+      <dl>
+        @for (fact of facts; track fact.label) {
+          <div>
+            <dt>{{ fact.label }}</dt>
+            <dd>{{ fact.value }}</dd>
+          </div>
+        }
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<!-- Missions -->
+<section class="section surface-sand bg-cross" aria-labelledby="missions-title">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Nos missions</span>
+      <h2 id="missions-title">Ce que nous faisons</h2>
+    </div>
+    <ol class="missions">
+      @for (mission of missions; track mission.title; let i = $index) {
+        <li class="mission">
+          <div class="mission__top">
+            <span class="mission__icon"><app-icon [name]="mission.icon" [size]="22" /></span>
+            <span class="mission__num" aria-hidden="true">0{{ i + 1 }}</span>
+          </div>
+          <h3>{{ mission.title }}</h3>
+          <p>{{ mission.text }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Vision -->
+<section class="section surface-dark bg-cross-light vision" aria-labelledby="vision-title">
+  <div class="container vision__inner">
+    <div>
+      <span class="vision__eyebrow">Notre vision</span>
+      <h2 id="vision-title">Protéger les plantes, sans compromettre le reste</h2>
+    </div>
+    <ul class="vision__list">
+      @for (item of vision; track item.text) {
+        <li>
+          <span class="vision__icon"><app-icon [name]="item.icon" [size]="22" /></span>
+          {{ item.text }}
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Cellules -->
+<section class="section surface-white" aria-labelledby="cells-title">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">Organisation</span>
+      <h2 id="cells-title">Quatre cellules complémentaires</h2>
+    </div>
+    <ul class="cells">
+      @for (pole of poles; track pole.label) {
+        <li class="cell" [attr.data-accent]="pole.accent">
+          <span class="cell__icon"><app-icon [name]="pole.icon!" [size]="22" /></span>
+          <h3><a class="cell__link" [routerLink]="pole.route">{{ pole.label }}</a></h3>
+          <p>{{ pole.description }}</p>
+          <span class="link-arrow" aria-hidden="true">Découvrir <app-icon name="arrow-right" [size]="16" /></span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Équipe -->
+<section id="equipe" class="section surface-sand" aria-labelledby="team-title">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow">L’équipe</span>
+      <h2 id="team-title">Les personnes derrière Corder</h2>
+      <p>N’hésitez pas à les contacter si vous avez des questions.</p>
+    </div>
+
+    @let s = teamState();
+    @if (s.status === 'loading') {
+      <div class="skeleton team-skeleton" aria-busy="true"></div>
+    } @else if (s.status === 'error') {
+      <p class="load-error">
+        L’équipe ne peut pas être affichée pour le moment. Contactez-nous à
+        <a [href]="'mailto:' + contact.email">{{ contact.email }}</a>.
+      </p>
+    } @else {
+      @if (board().length) {
+        <h3 class="team__group">Conseil d’administration</h3>
+        <ul class="team team--board">
+          @for (m of board(); track m.id) {
+            <li class="member">
+              <span class="member__avatar member__avatar--board" aria-hidden="true">{{ initials(m.firstName, m.lastName) }}</span>
+              <div>
+                <strong>{{ m.firstName }} {{ m.lastName }}</strong>
+                <span class="member__role">{{ m.role }}</span>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+
+      <h3 class="team__group">Équipe</h3>
+      <ul class="team">
+        @for (m of staff(); track m.id) {
+          <li class="member">
+            @if (m.photo) {
+              <img class="member__avatar" [src]="m.photo" alt="" width="56" height="56" loading="lazy" />
+            } @else {
+              <span class="member__avatar" aria-hidden="true">{{ initials(m.firstName, m.lastName) }}</span>
+            }
+            <div class="member__info">
+              <strong>{{ m.firstName }} {{ m.lastName }}</strong>
+              <span class="member__role">{{ m.role }}</span>
+              @if (m.email) {
+                <a class="member__email" [href]="'mailto:' + m.email">
+                  <app-icon name="mail" [size]="14" /> {{ m.email }}
+                </a>
+              }
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</section>
+
+<!-- Appel à l'action -->
+<section class="section-cta surface-white">
+  <div class="container cta">
+    <div>
+      <h2>Une question pour l’équipe ?</h2>
+      <p>Décrivez votre situation, nous orientons votre demande vers la bonne personne.</p>
+    </div>
+    <div class="cta__actions">
+      <a class="btn btn--cta btn--lg" routerLink="/contact">Nous contacter</a>
+      <a class="btn btn--outline btn--lg" [href]="contact.phoneHref">
+        <app-icon name="phone" [size]="18" /> {{ contact.phone }}
+      </a>
+    </div>
+  </div>
+</section>

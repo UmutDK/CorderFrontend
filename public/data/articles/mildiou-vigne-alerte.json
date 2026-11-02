@@ -1,0 +1,18 @@
+{
+  "data": {
+    "id": 12,
+    "slug": "mildiou-vigne-alerte",
+    "title": "Vigne : premiers symptômes de mildiou observés",
+    "excerpt": "La Clinique des plantes a reçu les premiers échantillons de la saison.",
+    "publishedAt": "2026-06-12T09:00:00+02:00",
+    "category": {
+      "slug": "clinique-des-plantes",
+      "label": "Clinique des plantes"
+    },
+    "pole": "clinique",
+    "image": null,
+    "featured": false,
+    "body": "<h2>Ce qu’il faut retenir</h2>\n<ul><li>Les principaux changements et leur calendrier d’entrée en vigueur.</li><li>Les personnes et les activités concernées.</li><li>Les démarches à prévoir dès maintenant.</li></ul>\n<h2>En pratique</h2>\n<p>Ce texte est un <strong>contenu d’exemple</strong> : il sera remplacé par l’article rédigé par l’équipe Corder depuis l’administration du site.</p>\n<blockquote>Anticiper permet d’éviter les mauvaises surprises lors des contrôles.</blockquote>\n<h3>Pour aller plus loin</h3>\n<p>Consultez notre <a href=\"/formations\">agenda des formations</a> ou <a href=\"/contact\">posez-nous votre question</a>.</p>",
+    "updatedAt": null
+  }
+}

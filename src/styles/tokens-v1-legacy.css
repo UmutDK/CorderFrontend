@@ -1,0 +1,131 @@
+/* SAUVEGARDE de la palette v1 (avant la charte Corder, 2026-10-29). Fichier NON chargé.
+   Rollback : remplacer le bloc « Palette brute » + rôles sémantiques de tokens.css par celui-ci,
+   et remettre les 2 ombres colorées notées en bas. */
+
+/* Design tokens CORDER — toutes les couleurs, typos et espacements passent par ici.
+   Points de rupture (fixes, les variables CSS ne marchent pas dans les media queries) :
+   sm 640px · md 768px · lg 1024px · xl 1200px */
+
+:root {
+  /* Palette brute */
+  --c-navy-900: #0b1528;
+  --c-navy-800: #14213d;
+  --c-navy-700: #1f2f52;
+  --c-navy-100: #e3e8f2;
+  --c-navy-50: #f1f4f9;
+
+  --c-green-700: #1f4f35;
+  --c-green-600: #276041;
+  --c-green-500: #2f7a40;
+  --c-green-100: #dcebdf;
+  --c-green-50: #eff6f0;
+
+  --c-terra-600: #b04f27;
+  --c-terra-100: #f6e2d7;
+  --c-terra-50: #fcf3ee;
+
+  --c-teal-600: #1f766d;
+  --c-teal-100: #d6ece9;
+  --c-teal-50: #eef7f5;
+
+  --c-gold-500: #d9a72b;
+  --c-gold-700: #8a6410; /* version texte (contraste AA sur blanc) */
+  --c-gold-100: #f8ecc8;
+  --c-gold-50: #fdf8ea;
+
+  --c-sand-50: #fbf8f3;
+  --c-sand-100: #f6efe5;
+  --c-sand-200: #ece2d3;
+  --c-white: #ffffff;
+
+  /* Rôles sémantiques — 3 surfaces seulement : sable, blanc, marine */
+  --surface-page: var(--c-sand-100);
+  --surface-card: var(--c-white);
+  --surface-dark: var(--c-navy-800);
+
+  --text: #152038;
+  --text-soft: #475266;
+  --text-muted: #667085;
+  --text-on-dark: #f4f6fa;
+  --text-on-dark-soft: #aeb8cc;
+
+  --border: #e6dfd3;
+  --border-strong: #d3c8b6;
+
+  --brand: var(--c-green-600);
+  --brand-strong: var(--c-green-700);
+  --cta: var(--c-green-500);
+  --cta-hover: var(--c-green-600);
+  --focus-ring: #d9a72b;
+
+  /* Typographie */
+  --font-display: 'Manrope', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --fs-hero: clamp(2.5rem, 1.5rem + 3.6vw, 4.25rem);
+  --fs-h2: clamp(1.875rem, 1.35rem + 1.8vw, 2.75rem);
+  --fs-h3: 1.25rem;
+  --fs-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.8125rem;
+
+  /* Formes & profondeur */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(20 33 61 / 0.06), 0 1px 3px rgb(20 33 61 / 0.05);
+  --shadow-md: 0 6px 16px -4px rgb(20 33 61 / 0.12), 0 2px 6px rgb(20 33 61 / 0.05);
+  --shadow-lg: 0 24px 48px -12px rgb(20 33 61 / 0.22);
+
+  /* Layout */
+  --container: 1240px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --section-y: clamp(4rem, 2.5rem + 5vw, 7.5rem);
+  --topbar-h: 36px;
+  --header-h: 76px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Couleur d'accent par pôle : un élément pose data-accent et utilise --accent / --accent-soft / --accent-tint */
+[data-accent='clinique'] {
+  --accent: var(--c-green-600);
+  --accent-soft: var(--c-green-100);
+  --accent-tint: var(--c-green-50);
+}
+
+[data-accent='crp'] {
+  --accent: var(--c-terra-600);
+  --accent-soft: var(--c-terra-100);
+  --accent-tint: var(--c-terra-50);
+}
+
+[data-accent='phytolicence'] {
+  --accent: var(--c-teal-600);
+  --accent-soft: var(--c-teal-100);
+  --accent-tint: var(--c-teal-50);
+}
+
+[data-accent='recherche'] {
+  --accent: var(--c-navy-800);
+  --accent-soft: var(--c-navy-100);
+  --accent-tint: var(--c-navy-50);
+}
+
+[data-accent='formation'] {
+  --accent: var(--c-gold-700);
+  --accent-soft: var(--c-gold-100);
+  --accent-tint: var(--c-gold-50);
+}
+
+/* Ombres colorées v1 hors de ce fichier :
+   base.css .btn--cta:hover → box-shadow: 0 6px 16px -6px rgb(47 122 64 / 0.6);
+   newsletter.css → .newsletter__field input[aria-invalid] color: #ffd2c2 ; .newsletter__error color: #ffb59a */
+
+/* Touches « charte » ajoutées en v2, à retirer pour un rollback complet :
+   hero.css .hero__shape → background-color: var(--c-green-600); (au lieu du dégradé du logo)
+   hero.css .hero__pulse et ::after → background: var(--c-gold-500); (au lieu de --c-brand-orange)
+   site-footer.css → supprimer le bloc .site-footer::before (liseré 4 couleurs) */

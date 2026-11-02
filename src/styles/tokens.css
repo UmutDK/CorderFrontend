@@ -1,0 +1,135 @@
+/* Design tokens CORDER — toutes les couleurs, typos et espacements passent par ici.
+   Points de rupture (fixes, les variables CSS ne marchent pas dans les media queries) :
+   sm 640px · md 768px · lg 1024px · xl 1200px */
+
+:root {
+  /* Charte graphique Corder (ligne éditoriale §3.1).
+     Logos : #0e7a75 · #12a19a · #dddc01 · #94c11f
+     Visuels : #f5f8e0 · #e7f39a · #b7c90d · #4d9c18 · #e3254e · #0e103b · #F2911F
+     Les noms des variables sont historiques (v1, voir tokens-v1-legacy.css pour le rollback) :
+     terra = rose Corder (CRP, alertes, erreurs) · gold = orange Corder (formations), gold-500 = jaune du logo.
+     Les teintes « 600/700 » sont des versions assombries des couleurs de la charte,
+     nécessaires pour le texte et les boutons (contraste AA ≥ 4,5:1 sur blanc). */
+
+  /* Palette brute */
+  --c-navy-900: #080926;
+  --c-navy-800: #0e103b; /* charte */
+  --c-navy-700: #1b1e57;
+  --c-navy-100: #e3e4f0;
+  --c-navy-50: #f2f2f8;
+
+  --c-green-700: #2e5e0e;
+  --c-green-600: #3f8213; /* #4d9c18 assombri : texte et boutons */
+  --c-green-500: #4d9c18; /* charte */
+  --c-green-100: #e7f39a; /* charte */
+  --c-green-50: #f3f8dc;
+
+  --c-terra-600: #c81e43; /* #e3254e assombri : texte */
+  --c-terra-100: #fbd5de;
+  --c-terra-50: #fdeff2;
+
+  --c-teal-600: #0e7a75; /* charte (logo) */
+  --c-teal-100: #cdeceb;
+  --c-teal-50: #ebf7f6;
+
+  --c-gold-500: #dddc01; /* charte (logo) : accents sur fond marine uniquement */
+  --c-gold-700: #a8550a; /* #F2911F assombri : texte */
+  --c-gold-100: #fde2c2;
+  --c-gold-50: #fef4e7;
+
+  --c-sand-50: #fbfcf6;
+  --c-sand-100: #f6f7ee;
+  --c-sand-200: #e9ecd6;
+  --c-white: #ffffff;
+
+  /* Couleurs de la charte utilisables telles quelles (décor, illustrations, pas de texte) */
+  --c-brand-teal-light: #12a19a;
+  --c-brand-logo-green: #94c11f;
+  --c-brand-lime: #b7c90d;
+  --c-brand-rose: #e3254e;
+  --c-brand-orange: #f2911f;
+  --c-brand-cream: #f5f8e0;
+
+  /* Rôles sémantiques — 3 surfaces seulement : crème, blanc, marine */
+  --surface-page: var(--c-sand-100);
+  --surface-card: var(--c-white);
+  --surface-dark: var(--c-navy-800);
+
+  --text: #14163a;
+  --text-soft: #474a68;
+  --text-muted: #65687f;
+  --text-on-dark: #f4f5fa;
+  --text-on-dark-soft: #b3b6d0;
+
+  --border: #e4e6d6;
+  --border-strong: #ccd0b4;
+
+  --brand: var(--c-green-600);
+  --brand-strong: var(--c-green-700);
+  --cta: var(--c-green-600);
+  --cta-hover: var(--c-green-700);
+  /* Sarcelle du logo : visible sur blanc (5,1:1) comme sur marine (3,6:1) */
+  --focus-ring: var(--c-teal-600);
+
+  /* Typographie */
+  --font-display: 'Manrope', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  --fs-hero: clamp(2.5rem, 1.5rem + 3.6vw, 4.25rem);
+  --fs-h2: clamp(1.875rem, 1.35rem + 1.8vw, 2.75rem);
+  --fs-h3: 1.25rem;
+  --fs-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --fs-body: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.8125rem;
+
+  /* Formes & profondeur */
+  --r-sm: 8px;
+  --r-md: 14px;
+  --r-lg: 22px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(14 16 59 / 0.06), 0 1px 3px rgb(14 16 59 / 0.05);
+  --shadow-md: 0 6px 16px -4px rgb(14 16 59 / 0.12), 0 2px 6px rgb(14 16 59 / 0.05);
+  --shadow-lg: 0 24px 48px -12px rgb(14 16 59 / 0.22);
+
+  /* Layout */
+  --container: 1240px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --section-y: clamp(4rem, 2.5rem + 5vw, 7.5rem);
+  --topbar-h: 36px;
+  --header-h: 76px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Couleur d'accent par pôle : un élément pose data-accent et utilise --accent / --accent-soft / --accent-tint */
+[data-accent='clinique'] {
+  --accent: var(--c-green-600);
+  --accent-soft: var(--c-green-100);
+  --accent-tint: var(--c-green-50);
+}
+
+[data-accent='crp'] {
+  --accent: var(--c-terra-600);
+  --accent-soft: var(--c-terra-100);
+  --accent-tint: var(--c-terra-50);
+}
+
+[data-accent='phytolicence'] {
+  --accent: var(--c-teal-600);
+  --accent-soft: var(--c-teal-100);
+  --accent-tint: var(--c-teal-50);
+}
+
+[data-accent='recherche'] {
+  --accent: var(--c-navy-800);
+  --accent-soft: var(--c-navy-100);
+  --accent-tint: var(--c-navy-50);
+}
+
+[data-accent='formation'] {
+  --accent: var(--c-gold-700);
+  --accent-soft: var(--c-gold-100);
+  --accent-tint: var(--c-gold-50);
+}

@@ -1,0 +1,40 @@
+@let t = training();
+
+<time class="event__date" [attr.datetime]="t.startsAt">
+  <span class="event__day">{{ t.startsAt | date: 'd' }}</span>
+  <span class="event__wday">{{ t.startsAt | date: 'EEE' }}</span>
+</time>
+
+<div class="event__main">
+  <div class="event__tags">
+    <span class="event__type">Phytolicence {{ t.licenceType }}</span>
+    @if (t.seatsLeft === 0) {
+      <span class="event__status event__status--full">Complet</span>
+    } @else if (t.seatsLeft <= fewSeats) {
+      <span class="event__status event__status--few">
+        Plus que {{ t.seatsLeft }} place{{ t.seatsLeft > 1 ? 's' : '' }}
+      </span>
+    }
+  </div>
+  <h4>{{ t.title }}</h4>
+  <p class="event__info">
+    <span><app-icon name="map-pin" [size]="15" /> {{ t.location }}</span>
+    <span>
+      <app-icon name="calendar" [size]="15" />
+      {{ t.startsAt | date: "H'h'mm" }} – {{ t.endsAt | date: "H'h'mm" }}
+    </span>
+  </p>
+</div>
+
+<div class="event__side">
+  <span class="event__price">
+    {{ t.price === 0 ? 'Gratuit' : (t.price | currency: 'EUR' : 'symbol' : '1.0-0') }}
+  </span>
+  @if (t.seatsLeft === 0) {
+    <span class="btn event__btn" aria-disabled="true">Complet</span>
+  } @else {
+    <a class="btn btn--cta event__btn" [routerLink]="['/formations', t.slug]">
+      S’inscrire<span class="visually-hidden"> : {{ t.title }}</span>
+    </a>
+  }
+</div>

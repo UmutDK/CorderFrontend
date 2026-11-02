@@ -1,0 +1,27 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "value": "30+",
+      "label": "années d’expertise"
+    },
+    {
+      "id": 2,
+      "value": "4",
+      "label": "pôles spécialisés"
+    },
+    {
+      "id": 3,
+      "value": "1 500+",
+      "label": "analyses par an"
+    },
+    {
+      "id": 4,
+      "value": "50+",
+      "label": "formations par an"
+    }
+  ],
+  "meta": {
+    "total": 4
+  }
+}

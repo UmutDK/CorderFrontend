@@ -1,0 +1,48 @@
+{
+  "data": {
+    "id": 7,
+    "slug": "alternatives-herbicides-zones-publiques",
+    "title": "Alternatives aux herbicides en zones publiques",
+    "startsAt": "2027-01-14T09:00:00+01:00",
+    "endsAt": "2027-01-14T16:00:00+01:00",
+    "location": "Namur",
+    "licenceType": "P1",
+    "price": 45,
+    "seatsLeft": 0,
+    "summary": "Une formation pratique pour actualiser vos connaissances et appliquer les principes de la protection intégrée dans votre activité.",
+    "audience": "Personnel travaillant sous la responsabilité d’un détenteur de phytolicence P2.",
+    "objectives": [
+      "Connaître la réglementation en vigueur et ses évolutions récentes",
+      "Réduire les risques pour la santé et l’environnement",
+      "Mettre en œuvre des alternatives et des bonnes pratiques adaptées à votre activité"
+    ],
+    "program": [
+      {
+        "time": "9h00",
+        "title": "Accueil et tour de table"
+      },
+      {
+        "time": "9h15",
+        "title": "Cadre réglementaire et actualités"
+      },
+      {
+        "time": "12h00",
+        "title": "Pause de midi"
+      },
+      {
+        "time": "13h00",
+        "title": "Cas pratiques en sous-groupes"
+      },
+      {
+        "time": "15h30",
+        "title": "Synthèse, questions-réponses et évaluation"
+      }
+    ],
+    "venue": {
+      "name": "Centre de formation — Namur",
+      "address": "Adresse précise communiquée avec la confirmation d’inscription"
+    },
+    "capacity": 25,
+    "registrationDeadline": "2027-01-09T23:59:00+01:00"
+  }
+}

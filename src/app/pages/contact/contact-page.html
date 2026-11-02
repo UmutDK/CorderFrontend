@@ -1,0 +1,29 @@
+<app-page-header
+  heading="Contactez-nous"
+  lead="Une question sur un service, une formation ou la législation ? Décrivez votre situation : nous orientons votre demande vers le bon interlocuteur."
+  [crumbs]="[{ label: 'Contact' }]"
+  [overlap]="true"
+/>
+
+<!-- Libre-service avant le formulaire -->
+<section class="shortcuts-wrap" aria-labelledby="shortcuts-title">
+  <div class="container">
+    <h2 id="shortcuts-title" class="visually-hidden">Avant de nous écrire</h2>
+    <ul class="shortcuts">
+      @for (s of shortcuts; track s.title) {
+        <li class="shortcut" [attr.data-accent]="s.accent">
+          <span class="shortcut__icon"><app-icon [name]="s.icon" [size]="22" /></span>
+          <div>
+            <h3>
+              <a class="shortcut__link" [routerLink]="s.route" [fragment]="s.fragment">{{ s.title }}</a>
+            </h3>
+            <p>{{ s.text }}</p>
+          </div>
+          <app-icon class="shortcut__arrow" name="arrow-right" [size]="18" />
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<app-contact [showIntro]="false" />

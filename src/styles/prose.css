@@ -1,0 +1,89 @@
+/* Contenu rédigé dans l'administration (articles, pages) : typographie de lecture.
+   Global car le HTML est injecté via [innerHTML], hors de l'encapsulation des composants. */
+
+.prose {
+  max-width: 44rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.prose > * + * {
+  margin-top: 1.25em;
+}
+
+.prose h2 {
+  margin-top: 2em;
+  font-size: 1.5rem;
+}
+
+.prose h3 {
+  margin-top: 1.75em;
+  font-size: 1.1875rem;
+}
+
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.75em;
+}
+
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote {
+  margin-bottom: 0;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+}
+
+.prose li + li {
+  margin-top: 0.5em;
+}
+
+.prose li::marker {
+  color: var(--accent, var(--brand));
+}
+
+.prose a {
+  color: var(--brand);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.prose a:hover {
+  text-decoration-thickness: 2px;
+}
+
+.prose blockquote {
+  margin-inline: 0;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 4px solid var(--accent, var(--brand));
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.prose img {
+  height: auto;
+  border-radius: var(--r-md);
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+
+.prose th,
+.prose td {
+  padding: 0.625rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}

@@ -1,0 +1,143 @@
+.faq {
+  display: grid;
+  gap: 2.5rem;
+}
+
+.faq__intro {
+  display: grid;
+  gap: 2rem;
+  align-content: start;
+}
+
+.faq__intro .section-head {
+  margin-bottom: 0;
+}
+
+.faq__help {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: var(--r-lg);
+  background: var(--c-green-50);
+}
+
+.faq__help-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--c-green-600);
+  color: #fff;
+}
+
+.faq__help p {
+  margin: 0.25rem 0 0.75rem;
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
+}
+
+.faq-skeleton {
+  min-height: 380px;
+  border-radius: var(--r-md);
+}
+
+/* ---------- Accordéon ---------- */
+
+.faq__list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.faq__item {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-card);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.faq__item[open] {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.125rem 1.25rem;
+  border-radius: inherit;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+
+.faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq__item summary:hover {
+  color: var(--brand);
+}
+
+/* Icône + qui devient − à l'ouverture */
+.faq__toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--c-sand-100);
+  transition: background-color 0.2s;
+}
+
+.faq__toggle::before,
+.faq__toggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  transition: transform 0.25s var(--ease-out);
+}
+
+.faq__toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+.faq__item[open] .faq__toggle {
+  background: var(--c-green-600);
+  color: #fff;
+}
+
+.faq__item[open] .faq__toggle::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.faq__item p {
+  padding: 0 1.25rem 1.25rem;
+  color: var(--text-soft);
+}
+
+@media (min-width: 1024px) {
+  .faq {
+    grid-template-columns: 1fr 1.6fr;
+    gap: 4rem;
+  }
+
+  .faq__intro {
+    position: sticky;
+    align-self: start;
+    top: calc(var(--header-h) + 2rem);
+  }
+}

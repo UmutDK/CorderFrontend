@@ -1,0 +1,10 @@
+{
+  "data": [
+    { "id": 1, "question": "Comment faire analyser une plante malade ?", "answer": "Contactez la Clinique des plantes en décrivant les symptômes observés et envoyez-nous des photos. Si nécessaire, nous vous indiquerons comment prélever et nous faire parvenir un échantillon pour une analyse en laboratoire." },
+    { "id": 2, "question": "Comment renouveler ma phytolicence ?", "answer": "Le renouvellement passe par le suivi de formations continues agréées pendant la période de validité de votre phytolicence. Consultez l’agenda des formations et vérifiez votre date d’échéance dans votre espace phytolicence." },
+    { "id": 3, "question": "Quelle phytolicence choisir : NP, P1, P2 ou P3 ?", "answer": "Le type de phytolicence dépend de votre activité : utilisation professionnelle, assistance, distribution ou conseil. La Cellule phytolicence peut vous aider à déterminer celle qui correspond à votre situation." },
+    { "id": 4, "question": "Un produit phytopharmaceutique est-il autorisé en Wallonie ?", "answer": "La Cellule CRP vous informe de manière objective sur la législation en vigueur. Consultez notre section législation ou posez-nous directement votre question." },
+    { "id": 5, "question": "Qu’est-ce que le registre APPI’Field ?", "answer": "APPI’Field est un registre électronique qui vous permet d’enregistrer vos traitements phytosanitaires et de consulter l’historique d’utilisation des produits dans votre local phyto numérique." }
+  ],
+  "meta": { "total": 5 }
+}

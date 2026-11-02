@@ -1,0 +1,187 @@
+{
+  "data": [
+    {
+      "id": 3,
+      "firstName": "Laurence",
+      "lastName": "Janssens",
+      "role": "Coordinatrice",
+      "group": "staff",
+      "email": "laurence.janssens@corder.be",
+      "photo": null
+    },
+    {
+      "id": 4,
+      "firstName": "Pascale",
+      "lastName": "Berger",
+      "role": "Responsable ressources humaines",
+      "group": "staff",
+      "email": "pascale.berger@corder.be",
+      "photo": null
+    },
+    {
+      "id": 5,
+      "firstName": "Marie",
+      "lastName": "Lacroix",
+      "role": "Appui administratif",
+      "group": "staff",
+      "email": "marie.lacroix@corder.be",
+      "photo": null
+    },
+    {
+      "id": 6,
+      "firstName": "Arthur",
+      "lastName": "Vansteenwinckel",
+      "role": "Appui administratif",
+      "group": "staff",
+      "email": "arthur.vansteenwinckel@corder.be",
+      "photo": null
+    },
+    {
+      "id": 7,
+      "firstName": "Maëlle",
+      "lastName": "Dekiere",
+      "role": "Chargée de communication",
+      "group": "staff",
+      "email": "maelle.dekiere@corder.be",
+      "photo": null
+    },
+    {
+      "id": 8,
+      "firstName": "Loïc",
+      "lastName": "Laridant",
+      "role": "Chargé de mission et IT",
+      "group": "staff",
+      "email": "loic.laridant@corder.be",
+      "photo": null
+    },
+    {
+      "id": 9,
+      "firstName": "Yves",
+      "lastName": "Makwambala",
+      "role": "Chargé de mission IT",
+      "group": "staff",
+      "email": "yves.makwambala@corder.be",
+      "photo": null
+    },
+    {
+      "id": 10,
+      "firstName": "Umut",
+      "lastName": "Demirkazik",
+      "role": "Chargé de mission IT",
+      "group": "staff",
+      "email": "umut.demirkazik@corder.be",
+      "photo": null
+    },
+    {
+      "id": 11,
+      "firstName": "Eugénie",
+      "lastName": "Coninck",
+      "role": "Chargée de mission",
+      "group": "staff",
+      "email": "eugenie.coninck@corder.be",
+      "photo": null
+    },
+    {
+      "id": 12,
+      "firstName": "Jean-Baptiste",
+      "lastName": "De Maere",
+      "role": "Chargé de mission",
+      "group": "staff",
+      "email": "jb.demaere@corder.be",
+      "photo": null
+    },
+    {
+      "id": 13,
+      "firstName": "Soukaïna",
+      "lastName": "El Massoudi",
+      "role": "Chargée de mission",
+      "group": "staff",
+      "email": "soukaina.elmassoudi@corder.be",
+      "photo": null
+    },
+    {
+      "id": 14,
+      "firstName": "Chloé",
+      "lastName": "Guillitte",
+      "role": "Chargée de mission",
+      "group": "staff",
+      "email": "chloe.guillitte@corder.be",
+      "photo": null
+    },
+    {
+      "id": 15,
+      "firstName": "Robin",
+      "lastName": "Hannoteau",
+      "role": "Chargé de mission",
+      "group": "staff",
+      "email": "robin.hannoteau@corder.be",
+      "photo": null
+    },
+    {
+      "id": 16,
+      "firstName": "François",
+      "lastName": "Marchandise",
+      "role": "Chargé de mission",
+      "group": "staff",
+      "email": "francois.marchandise@corder.be",
+      "photo": null
+    },
+    {
+      "id": 17,
+      "firstName": "Loïc",
+      "lastName": "Monseur",
+      "role": "Chargé de mission",
+      "group": "staff",
+      "email": "loic.monseur@corder.be",
+      "photo": null
+    },
+    {
+      "id": 18,
+      "firstName": "Gaspard",
+      "lastName": "Nihorimbere",
+      "role": "Chargé de mission",
+      "group": "staff",
+      "email": "gaspard.nihorimbere@corder.be",
+      "photo": null
+    },
+    {
+      "id": 19,
+      "firstName": "Caroline",
+      "lastName": "Pierret",
+      "role": "Chargée de mission",
+      "group": "staff",
+      "email": "caroline.pierret@corder.be",
+      "photo": null
+    },
+    {
+      "id": 20,
+      "firstName": "Valentine",
+      "lastName": "De Neyer",
+      "role": "Chargée de mission",
+      "group": "staff",
+      "email": "valentine.deneyer@corder.be",
+      "photo": null
+    },
+    {
+      "id": 21,
+      "firstName": "Cyril",
+      "lastName": "Focant",
+      "role": "Technicien de laboratoire",
+      "group": "staff",
+      "email": "cyril.focant@corder.be",
+      "photo": null
+    },
+    {
+      "id": 22,
+      "firstName": "Laurence",
+      "lastName": "Lootgieter",
+      "role": "Technicienne de laboratoire",
+      "group": "staff",
+      "email": "laurence.lootgieter@corder.be",
+      "photo": null
+    }
+  ],
+  "meta": {
+    "total": 20
+  }
+}

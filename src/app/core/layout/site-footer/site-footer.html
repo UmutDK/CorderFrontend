@@ -1,0 +1,89 @@
+<footer class="site-footer bg-cross-light">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <a routerLink="/" class="brand" aria-label="Corder — retour à l’accueil">
+        <img class="brand__logo" src="brand/corder-logo-light.svg" alt="" width="490" height="197" />
+      </a>
+      <p class="footer__pitch">
+        Coordination Recherche et Développement Rural — l’interface entre la recherche
+        scientifique et le monde agricole et rural wallon.
+      </p>
+      <ul class="footer__contact">
+        <li>
+          <app-icon name="map-pin" [size]="18" />
+          <address>
+            @for (line of contact.addressLines; track line) {
+              {{ line }}<br />
+            }
+          </address>
+        </li>
+        <li>
+          <app-icon name="phone" [size]="18" />
+          <a [href]="contact.phoneHref">{{ contact.phone }}</a>
+        </li>
+        <li>
+          <app-icon name="mail" [size]="18" />
+          <a [href]="'mailto:' + contact.email">{{ contact.email }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <nav class="footer__col" aria-labelledby="footer-nav-title">
+      <h2 id="footer-nav-title" class="footer__title">Navigation</h2>
+      <ul class="footer__list">
+        @for (link of nav; track link.label) {
+          <li><a [routerLink]="link.route">{{ link.label }}</a></li>
+        }
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-labelledby="footer-poles-title">
+      <h2 id="footer-poles-title" class="footer__title">Nos pôles</h2>
+      <ul class="footer__list">
+        @for (pole of poles; track pole.label) {
+          <li>
+            <a [routerLink]="pole.route" class="footer__pole" [attr.data-accent]="pole.accent">
+              <span class="footer__dot" aria-hidden="true"></span>
+              {{ pole.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="footer__col">
+      <h2 class="footer__title">Restez informé</h2>
+      <p class="footer__note">Actualités, alertes réglementaires et nouvelles formations.</p>
+      <a class="btn btn--cta footer__newsletter" routerLink="/newsletter">
+        S’inscrire à la newsletter
+      </a>
+      <ul class="footer__social" aria-label="Réseaux sociaux">
+        @for (item of social; track item.label) {
+          <li>
+            <a
+              [href]="item.href"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="item.label + ' (nouvel onglet)'"
+            >
+              <app-icon [name]="item.icon" [size]="18" />
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <div class="container footer__bottom-inner">
+      <p>© {{ year }} Corder ASBL — Tous droits réservés</p>
+      <nav aria-label="Informations légales">
+        <ul class="footer__legal">
+          @for (link of legal; track link.label) {
+            <li><a [routerLink]="link.route">{{ link.label }}</a></li>
+          }
+        </ul>
+      </nav>
+    </div>
+  </div>
+</footer>

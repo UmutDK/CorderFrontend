@@ -1,0 +1,122 @@
+<section id="que-faire" class="section surface-white" aria-labelledby="que-faire-title">
+  <div class="container">
+    <div class="section-head section-head--center">
+      <span class="eyebrow">Accès rapide</span>
+      <h2 id="que-faire-title">Que souhaitez-vous faire ?</h2>
+      <p>Trouvez rapidement le service ou l’information dont vous avez besoin.</p>
+    </div>
+
+    <form class="search" role="search" (submit)="onSearch($event, searchInput.value)">
+      <label class="visually-hidden" for="site-search">Rechercher sur le site</label>
+      <app-icon class="search__icon" name="search" />
+      <input
+        #searchInput
+        id="site-search"
+        class="search__input"
+        type="search"
+        name="q"
+        placeholder="Une information, une formation, un outil…"
+        autocomplete="off"
+      />
+      <button class="btn btn--primary" type="submit">Rechercher</button>
+    </form>
+
+    <div class="search__popular">
+      <span>Recherches fréquentes :</span>
+      @for (term of popularSearches; track term) {
+        <a class="chip chip--sm" routerLink="/recherche" [queryParams]="{ q: term }">{{ term }}</a>
+      }
+    </div>
+
+    <div class="bento">
+      <!-- Tâche principale : la plus demandée -->
+      <article class="task task--featured" data-accent="clinique">
+        <div class="task__body">
+          <div class="task__top">
+            <span class="task__icon"><app-icon name="sprout" [size]="24" /></span>
+            <span class="tag">Clinique des plantes</span>
+          </div>
+          <h3>
+            <a class="task__link" routerLink="/clinique-des-plantes">
+              Identifier une maladie sur une plante
+            </a>
+          </h3>
+          <p>
+            Maladies, ravageurs, carences : envoyez-nous des photos et obtenez un diagnostic par nos
+            experts.
+          </p>
+          <ol class="task__steps">
+            <li><span>1</span> Décrivez le symptôme observé</li>
+            <li><span>2</span> Envoyez photos ou échantillon</li>
+            <li><span>3</span> Recevez le diagnostic et nos conseils</li>
+          </ol>
+          <span class="link-arrow" aria-hidden="true">
+            Demander une analyse <app-icon name="arrow-right" [size]="18" />
+          </span>
+        </div>
+        <img
+          class="task__img"
+          src="images/diagnostic-semis.jpg"
+          alt=""
+          width="1000"
+          height="667"
+          loading="lazy"
+        />
+      </article>
+
+      @for (task of tasks; track task.title) {
+        <article class="task" [attr.data-accent]="task.accent">
+          <div class="task__top">
+            <span class="task__icon"><app-icon [name]="task.icon" [size]="24" /></span>
+            @if (task.tag) {
+              <span class="tag">{{ task.tag }}</span>
+            }
+          </div>
+          <h3>
+            <a class="task__link" [routerLink]="task.route">{{ task.title }}</a>
+          </h3>
+          <p>{{ task.text }}</p>
+          <span class="link-arrow" aria-hidden="true">
+            {{ task.cta }} <app-icon name="arrow-right" [size]="18" />
+          </span>
+        </article>
+      }
+
+      <!-- Outil phare : bandeau sombre -->
+      <article class="task tool-banner bg-cross-light">
+        <div class="tool-banner__text">
+          <span class="tool-banner__eyebrow">
+            <app-icon name="database" [size]="16" /> Registre électronique
+          </span>
+          <h3>
+            <a class="task__link" routerLink="/outils/appi-field">Utiliser le registre APPI’Field</a>
+          </h3>
+          <p>
+            Enregistrez vos traitements phytosanitaires et consultez l’historique d’utilisation des
+            PPP dans votre local phyto numérique.
+          </p>
+          <span class="btn btn--light" aria-hidden="true">
+            Ouvrir APPI’Field <app-icon name="arrow-right" [size]="18" />
+          </span>
+        </div>
+
+        <div class="register" aria-hidden="true">
+          <div class="register__head">
+            <span>Registre · Parcelle Nord</span>
+            <span class="register__status">Synchronisé</span>
+          </div>
+          @for (row of registerPreview; track row.date) {
+            <div class="register__row">
+              <span class="register__date">{{ row.date }}</span>
+              <span>
+                <strong>{{ row.crop }}</strong>
+                <small>{{ row.product }}</small>
+              </span>
+              <span class="register__dose">{{ row.dose }}</span>
+            </div>
+          }
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

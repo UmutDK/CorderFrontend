@@ -1,0 +1,48 @@
+{
+  "data": {
+    "id": 8,
+    "slug": "formation-initiale-p2-module-1",
+    "title": "Formation initiale phytolicence P2 (module 1)",
+    "startsAt": "2027-01-19T09:00:00+01:00",
+    "endsAt": "2027-01-19T16:00:00+01:00",
+    "location": "Libramont",
+    "licenceType": "P2",
+    "price": 90,
+    "seatsLeft": 20,
+    "summary": "Une formation pratique pour actualiser vos connaissances et appliquer les principes de la protection intégrée dans votre activité.",
+    "audience": "Utilisateurs professionnels : agriculteurs, horticulteurs, gestionnaires d’espaces verts.",
+    "objectives": [
+      "Connaître la réglementation en vigueur et ses évolutions récentes",
+      "Réduire les risques pour la santé et l’environnement",
+      "Mettre en œuvre des alternatives et des bonnes pratiques adaptées à votre activité"
+    ],
+    "program": [
+      {
+        "time": "9h00",
+        "title": "Accueil et tour de table"
+      },
+      {
+        "time": "9h15",
+        "title": "Cadre réglementaire et actualités"
+      },
+      {
+        "time": "12h00",
+        "title": "Pause de midi"
+      },
+      {
+        "time": "13h00",
+        "title": "Cas pratiques en sous-groupes"
+      },
+      {
+        "time": "15h30",
+        "title": "Synthèse, questions-réponses et évaluation"
+      }
+    ],
+    "venue": {
+      "name": "Centre de formation — Libramont",
+      "address": "Adresse précise communiquée avec la confirmation d’inscription"
+    },
+    "capacity": 25,
+    "registrationDeadline": "2027-01-14T23:59:00+01:00"
+  }
+}

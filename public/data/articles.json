@@ -1,0 +1,181 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "slug": "phytolicences-echeances-2027-2028",
+      "title": "Phytolicences : préparez le renouvellement des échéances 2027-2028",
+      "excerpt": "De nombreuses phytolicences arrivent à échéance. Vérifiez votre date d’expiration et planifiez dès maintenant les formations continues nécessaires.",
+      "publishedAt": "2026-10-21T10:00:00+02:00",
+      "category": {
+        "slug": "phytolicence",
+        "label": "Phytolicence"
+      },
+      "pole": "phytolicence",
+      "image": {
+        "url": "images/hero-champ.jpg",
+        "alt": ""
+      },
+      "featured": true
+    },
+    {
+      "id": 2,
+      "slug": "mildiou-restez-vigilants",
+      "title": "Mildiou : les conditions climatiques favorables, restez vigilants",
+      "excerpt": "Les observations de la Clinique des plantes et nos conseils pour une lutte raisonnée.",
+      "publishedAt": "2026-10-14T09:00:00+02:00",
+      "category": {
+        "slug": "clinique-des-plantes",
+        "label": "Clinique des plantes"
+      },
+      "pole": "clinique",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 3,
+      "slug": "nouvelle-version-phytoscore",
+      "title": "Nouvelle version de PhytoScore disponible",
+      "excerpt": "Une interface repensée et de nouveaux indicateurs pour évaluer vos pratiques.",
+      "publishedAt": "2026-10-02T09:00:00+02:00",
+      "category": {
+        "slug": "outils",
+        "label": "Outils"
+      },
+      "pole": "recherche",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 4,
+      "slug": "calendrier-formations-premier-semestre",
+      "title": "Le calendrier des formations du premier semestre est en ligne",
+      "excerpt": "Formations initiales et continues, en présentiel ou à distance : inscrivez-vous.",
+      "publishedAt": "2026-09-25T09:00:00+02:00",
+      "category": {
+        "slug": "formations",
+        "label": "Formations"
+      },
+      "pole": "formation",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 5,
+      "slug": "zones-tampons-ce-qui-change",
+      "title": "Zones tampons : ce qui change pour les applications près des cours d’eau",
+      "excerpt": "Les distances à respecter évoluent. Le point sur les nouvelles règles et leurs conséquences pratiques.",
+      "publishedAt": "2026-09-18T09:00:00+02:00",
+      "category": {
+        "slug": "legislation",
+        "label": "Législation"
+      },
+      "pole": "crp",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 6,
+      "slug": "pucerons-automne-cereales",
+      "title": "Pucerons d’automne sur céréales : seuils et observations",
+      "excerpt": "Nos relevés de saison et les seuils d’intervention à connaître avant de traiter.",
+      "publishedAt": "2026-09-10T09:00:00+02:00",
+      "category": {
+        "slug": "clinique-des-plantes",
+        "label": "Clinique des plantes"
+      },
+      "pole": "clinique",
+      "image": {
+        "url": "images/diagnostic-semis.jpg",
+        "alt": ""
+      },
+      "featured": false
+    },
+    {
+      "id": 7,
+      "slug": "projet-desherbage-alternatif",
+      "title": "Désherbage alternatif : premiers résultats de nos essais",
+      "excerpt": "Trois saisons d’essais au champ pour comparer techniques mécaniques et thermiques.",
+      "publishedAt": "2026-08-28T09:00:00+02:00",
+      "category": {
+        "slug": "recherche",
+        "label": "Projets de recherche"
+      },
+      "pole": "recherche",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 8,
+      "slug": "appi-field-nouvelles-fonctionnalites",
+      "title": "APPI’Field : export du registre et nouvelles fonctionnalités",
+      "excerpt": "Exportez votre registre en un clic et retrouvez plus facilement vos traitements passés.",
+      "publishedAt": "2026-08-12T09:00:00+02:00",
+      "category": {
+        "slug": "outils",
+        "label": "Outils"
+      },
+      "pole": "recherche",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 9,
+      "slug": "phytolicence-perte-numero",
+      "title": "Phytolicence : que faire en cas de perte de votre numéro ?",
+      "excerpt": "Les démarches pour retrouver votre numéro de phytolicence et votre date d’échéance.",
+      "publishedAt": "2026-07-30T09:00:00+02:00",
+      "category": {
+        "slug": "phytolicence",
+        "label": "Phytolicence"
+      },
+      "pole": "phytolicence",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 10,
+      "slug": "stockage-local-phyto",
+      "title": "Bien aménager son local phyto",
+      "excerpt": "Ventilation, rétention, signalisation : les points de contrôle les plus fréquents.",
+      "publishedAt": "2026-07-15T09:00:00+02:00",
+      "category": {
+        "slug": "legislation",
+        "label": "Législation"
+      },
+      "pole": "crp",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 11,
+      "slug": "formations-ete-bilan",
+      "title": "Formations de l’été : merci aux 400 participants",
+      "excerpt": "Retour sur une saison de formations riche en échanges sur le terrain.",
+      "publishedAt": "2026-06-27T09:00:00+02:00",
+      "category": {
+        "slug": "formations",
+        "label": "Formations"
+      },
+      "pole": "formation",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": 12,
+      "slug": "mildiou-vigne-alerte",
+      "title": "Vigne : premiers symptômes de mildiou observés",
+      "excerpt": "La Clinique des plantes a reçu les premiers échantillons de la saison.",
+      "publishedAt": "2026-06-12T09:00:00+02:00",
+      "category": {
+        "slug": "clinique-des-plantes",
+        "label": "Clinique des plantes"
+      },
+      "pole": "clinique",
+      "image": null,
+      "featured": false
+    }
+  ],
+  "meta": {
+    "total": 12
+  }
+}

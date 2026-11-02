@@ -1,0 +1,83 @@
+<section class="section surface-sand" aria-labelledby="agenda-title" data-accent="formation">
+  <!-- Aperçu : filtres simples ; l'agenda complet (recherche, filtres dans l'URL) est sur /formations -->
+  <div class="container">
+    <div class="agenda-head">
+      <div class="section-head">
+        <span class="eyebrow">Agenda</span>
+        <h2 id="agenda-title">Prochaines formations</h2>
+        <p>Formations initiales et continues pour obtenir ou renouveler votre phytolicence.</p>
+      </div>
+      <a class="btn btn--outline" routerLink="/formations">
+        Tout l’agenda <app-icon name="arrow-right" [size]="18" />
+      </a>
+    </div>
+
+    @switch (state().status) {
+    @case ('loading') {
+      <div class="skeleton agenda-skeleton" aria-busy="true"></div>
+    }
+    @case ('error') {
+      <p class="load-error">
+        L’agenda ne peut pas être chargé pour le moment.
+        <a routerLink="/formations">Voir la page Formations</a>
+      </p>
+    }
+    @default {
+    <!-- Filtres : lieu et type de phytolicence, indépendants -->
+    <div class="filters">
+      <div class="filters__group" role="group" aria-labelledby="filter-location">
+        <span id="filter-location" class="filters__label">
+          <app-icon name="map-pin" [size]="16" /> Lieu
+        </span>
+        <button class="chip" type="button" [attr.aria-pressed]="location() === null" (click)="location.set(null)">
+          Tous
+        </button>
+        @for (loc of locations(); track loc) {
+          <button class="chip" type="button" [attr.aria-pressed]="location() === loc" (click)="location.set(loc)">
+            {{ loc }}
+          </button>
+        }
+      </div>
+
+      <div class="filters__group" role="group" aria-labelledby="filter-type">
+        <span id="filter-type" class="filters__label">
+          <app-icon name="book" [size]="16" /> Phytolicence
+        </span>
+        <button class="chip" type="button" [attr.aria-pressed]="type() === null" (click)="type.set(null)">
+          Toutes
+        </button>
+        @for (t of licenceTypes; track t.code) {
+          <button
+            class="chip"
+            type="button"
+            [attr.aria-pressed]="type() === t.code"
+            [attr.title]="t.label"
+            (click)="type.set(t.code)"
+          >
+            {{ t.code }}<span class="visually-hidden"> : {{ t.label }}</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <p class="results" aria-live="polite">
+      {{ total() }} formation{{ total() > 1 ? 's' : '' }}
+      @if (hasFilters()) {
+        <button class="results__reset" type="button" (click)="resetFilters()">Réinitialiser les filtres</button>
+      }
+    </p>
+
+    <!-- Frise par mois -->
+    @if (visible().length) {
+      <app-training-timeline [trainings]="visible()" />
+    } @else {
+      <div class="empty">
+        <app-icon name="calendar" [size]="28" />
+        <p>Aucune formation ne correspond à ces filtres pour le moment.</p>
+        <button class="btn btn--outline" type="button" (click)="resetFilters()">Voir toutes les formations</button>
+      </div>
+    }
+    }
+    }
+  </div>
+</section>

@@ -1,0 +1,103 @@
+<section class="section surface-white" aria-labelledby="news-title">
+  <div class="container">
+    <div class="news-head">
+      <div class="section-head">
+        <span class="eyebrow">Actualités</span>
+        <h2 id="news-title">Les dernières nouvelles</h2>
+      </div>
+      <a class="btn btn--outline" routerLink="/actualites">
+        Toutes les actualités <app-icon name="arrow-right" [size]="18" />
+      </a>
+    </div>
+
+    <div class="news" [attr.aria-busy]="articlesState().status === 'loading'">
+      @switch (articlesState().status) {
+        @case ('loading') {
+          <div class="skeleton featured-skeleton"></div>
+          <div class="skeleton list-skeleton"></div>
+        }
+        @case ('error') {
+          <p class="load-error news__error">
+            Les actualités ne peuvent pas être chargées pour le moment.
+            <a routerLink="/actualites">Voir la page Actualités</a>
+          </p>
+        }
+        @default {
+          <!-- Article à la une -->
+          @if (featured(); as article) {
+            <article class="featured" [attr.data-accent]="article.pole">
+              @if (article.image) {
+                <div class="featured__media">
+                  <img [src]="article.image.url" [alt]="article.image.alt" width="1200" height="800" loading="lazy" />
+                </div>
+              }
+              <div class="featured__body">
+                <div class="meta">
+                  <span class="tag">{{ article.category.label }}</span>
+                  <time [attr.datetime]="article.publishedAt">{{ article.publishedAt | date: 'd MMMM y' }}</time>
+                </div>
+                <h3>
+                  <a class="card-link" [routerLink]="['/actualites', article.slug]">{{ article.title }}</a>
+                </h3>
+                <p>{{ article.excerpt }}</p>
+                <span class="link-arrow" aria-hidden="true">
+                  Lire l’article <app-icon name="arrow-right" [size]="18" />
+                </span>
+              </div>
+            </article>
+          }
+
+          <!-- Autres articles -->
+          <ul class="articles">
+            @for (article of others(); track article.id) {
+              <li class="article" [attr.data-accent]="article.pole">
+                <div class="meta">
+                  <span class="article__cat">{{ article.category.label }}</span>
+                  <time [attr.datetime]="article.publishedAt">{{ article.publishedAt | date: 'd MMM y' }}</time>
+                </div>
+                <h3>
+                  <a class="card-link" [routerLink]="['/actualites', article.slug]">{{ article.title }}</a>
+                </h3>
+                <p>{{ article.excerpt }}</p>
+              </li>
+            }
+          </ul>
+        }
+      }
+
+      <!-- Alertes réglementaires : format compact, chargées indépendamment -->
+      <aside class="alerts" aria-labelledby="alerts-title">
+        <div class="alerts__head">
+          <span class="alerts__icon"><app-icon name="shield" [size]="20" /></span>
+          <h3 id="alerts-title">Alertes réglementaires</h3>
+        </div>
+        @switch (alertsState().status) {
+          @case ('loading') {
+            <div class="skeleton alerts-skeleton" aria-hidden="true"></div>
+          }
+          @case ('error') {
+            <p class="alerts__error">Les alertes ne peuvent pas être chargées pour le moment.</p>
+          }
+          @default {
+            <ul class="alerts__list">
+              @for (alert of alerts(); track alert.id) {
+                <li class="alert" [class.alert--urgent]="alert.level === 'urgent'">
+                  <div class="meta">
+                    <span class="alert__level">{{ alert.level === 'urgent' ? 'Important' : 'Info' }}</span>
+                    <time [attr.datetime]="alert.publishedAt">{{ alert.publishedAt | date: 'd MMM y' }}</time>
+                  </div>
+                  <a class="card-link" [routerLink]="['/actualites', alert.slug]">{{ alert.title }}</a>
+                </li>
+              } @empty {
+                <li class="alerts__error">Aucune alerte en cours.</li>
+              }
+            </ul>
+          }
+        }
+        <a class="link-arrow alerts__more" routerLink="/legislation">
+          Consulter la législation <app-icon name="arrow-right" [size]="18" />
+        </a>
+      </aside>
+    </div>
+  </div>
+</section>

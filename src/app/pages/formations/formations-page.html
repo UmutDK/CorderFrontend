@@ -1,0 +1,121 @@
+<app-page-header
+  heading="Formations"
+  lead="Formations initiales et continues pour obtenir ou renouveler votre phytolicence, en présentiel ou à distance."
+  [crumbs]="[{ label: 'Formations' }]"
+/>
+
+<section class="section surface-sand formations" data-accent="formation" aria-labelledby="results-title">
+  <app-sidebar-layout label="Filtres" [badge]="activeFilters()">
+    <!-- Barre latérale : filtres -->
+    <form sidebar class="filters" role="search" (submit)="$event.preventDefault()">
+      <div class="filters__block">
+        <label class="filters__title" for="f-search">Rechercher</label>
+        <div class="filters__search">
+          <app-icon name="search" [size]="18" />
+          <input
+            id="f-search"
+            type="search"
+            placeholder="Titre, ville…"
+            autocomplete="off"
+            [value]="query()"
+            (input)="setFilter({ q: $any($event.target).value || null })"
+          />
+        </div>
+      </div>
+
+      <fieldset class="filters__block">
+        <legend class="filters__title">Lieu</legend>
+        <label class="option">
+          <input type="radio" name="lieu" [checked]="!location()" (change)="setFilter({ lieu: null })" />
+          Tous les lieux
+        </label>
+        @for (loc of locations(); track loc) {
+          <label class="option">
+            <input type="radio" name="lieu" [checked]="location() === loc" (change)="setFilter({ lieu: loc })" />
+            {{ loc }}
+          </label>
+        }
+      </fieldset>
+
+      <fieldset class="filters__block">
+        <legend class="filters__title">Type de phytolicence</legend>
+        <label class="option">
+          <input type="radio" name="type" [checked]="!type()" (change)="setFilter({ type: null })" />
+          Toutes
+        </label>
+        @for (t of licenceTypes; track t.code) {
+          <label class="option">
+            <input type="radio" name="type" [checked]="type() === t.code" (change)="setFilter({ type: t.code })" />
+            <span>
+              <strong>{{ t.code }}</strong>
+              <small>{{ t.label }}</small>
+            </span>
+          </label>
+        }
+      </fieldset>
+
+      <div class="filters__block">
+        <label class="option option--switch">
+          <input
+            type="checkbox"
+            [checked]="availableOnly()"
+            (change)="setFilter({ dispo: $any($event.target).checked ? 1 : null })"
+          />
+          Places disponibles uniquement
+        </label>
+      </div>
+
+      @if (activeFilters()) {
+        <button class="btn btn--outline btn--block" type="button" (click)="resetFilters()">
+          Réinitialiser les filtres
+        </button>
+      }
+
+      <div class="filters__help">
+        <strong>Quelle phytolicence ?</strong>
+        <p>Le type dépend de votre activité professionnelle.</p>
+        <a class="link-arrow" routerLink="/phytolicence">
+          En savoir plus <app-icon name="arrow-right" [size]="16" />
+        </a>
+      </div>
+    </form>
+
+    <!-- Résultats -->
+    <h2 id="results-title" class="visually-hidden">Formations à venir</h2>
+
+    @let s = state();
+    @if (s.status === 'loading') {
+      <div class="skeleton results-skeleton" aria-busy="true"></div>
+    } @else if (s.status === 'error') {
+      <p class="load-error">
+        L’agenda ne peut pas être chargé pour le moment. Réessayez plus tard ou
+        <a routerLink="/contact">contactez-nous</a>.
+      </p>
+    } @else {
+      <p class="results" aria-live="polite">
+        <strong>{{ filtered().length }}</strong>
+        formation{{ filtered().length > 1 ? 's' : '' }} à venir
+      </p>
+
+      @if (filtered().length) {
+        <app-training-timeline [trainings]="visible()" />
+
+        @if (remaining() > 0) {
+          <div class="more">
+            <button class="btn btn--outline btn--lg" type="button" (click)="showMore()">
+              Afficher plus de formations ({{ remaining() }})
+            </button>
+          </div>
+        }
+      } @else {
+        <div class="empty">
+          <app-icon name="calendar" [size]="28" />
+          <p>Aucune formation ne correspond à votre recherche pour le moment.</p>
+          <button class="btn btn--outline" type="button" (click)="resetFilters()">
+            Voir toutes les formations
+          </button>
+        </div>
+      }
+    }
+  </app-sidebar-layout>
+</section>

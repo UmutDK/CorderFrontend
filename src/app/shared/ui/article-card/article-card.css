@@ -1,0 +1,121 @@
+:host {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-card);
+  transition:
+    transform 0.3s var(--ease-out),
+    box-shadow 0.3s;
+}
+
+:host(:hover) {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+:host(:has(.card__link:focus-visible)) {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.card__media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+:host(:hover) .card__media img {
+  transform: scale(1.04);
+}
+
+/* Sans photo : aplat de la couleur du pôle avec son icône */
+.card__media--empty {
+  aspect-ratio: 16 / 5;
+  display: grid;
+  place-items: center;
+  background: var(--accent-tint, var(--c-sand-100));
+  color: var(--accent, var(--text-muted));
+}
+
+.card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem 1.375rem 1.5rem;
+}
+
+.card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.card__cat {
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent, var(--text));
+}
+
+h3 {
+  font-size: 1.125rem;
+}
+
+p {
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
+}
+
+/* À la une : image à gauche, texte plus grand */
+@media (min-width: 768px) {
+  :host(.is-featured) {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+  }
+
+  :host(.is-featured) .card__media {
+    aspect-ratio: auto;
+    min-height: 300px;
+  }
+
+  :host(.is-featured) .card__body {
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  :host(.is-featured) h3 {
+    font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  }
+
+  :host(.is-featured) p {
+    font-size: 1rem;
+  }
+}
+
+/* Toute la carte est cliquable via le lien du titre */
+.card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.card__link:focus-visible {
+  outline: none;
+}

@@ -1,0 +1,233 @@
+@let s = state();
+@let t = training();
+
+<app-page-header
+  [heading]="t?.title ?? (s.status === 'error' ? 'Formation introuvable' : 'Formation')"
+  [eyebrow]="t ? 'Phytolicence ' + t.licenceType + ' · ' + licenceLabel() : undefined"
+  [lead]="t?.summary"
+  [crumbs]="[{ label: 'Formations', route: '/formations' }, { label: t?.title ?? 'Formation' }]"
+/>
+
+<section class="section surface-sand detail" data-accent="formation">
+  <div class="container">
+    @if (s.status === 'loading') {
+      <div class="detail__grid" aria-busy="true">
+        <div class="skeleton detail__skeleton-main"></div>
+        <div class="skeleton detail__skeleton-aside"></div>
+      </div>
+    } @else if (s.status === 'error' || !t) {
+      <div class="not-found">
+        <app-icon name="calendar" [size]="32" />
+        <h2>Cette formation est introuvable</h2>
+        <p>Elle a peut-être été annulée, ou le lien est incorrect.</p>
+        <a class="btn btn--cta" routerLink="/formations">Voir toutes les formations</a>
+      </div>
+    } @else {
+      <div class="detail__grid">
+        <!-- Contenu -->
+        <div class="detail__main">
+          <section class="block" aria-labelledby="objectives-title">
+            <h2 id="objectives-title">Objectifs</h2>
+            <ul class="checklist">
+              @for (objective of t.objectives; track objective) {
+                <li><app-icon name="check" [size]="18" [stroke]="2.5" /> {{ objective }}</li>
+              }
+            </ul>
+          </section>
+
+          <section class="block" aria-labelledby="program-title">
+            <h2 id="program-title">Programme</h2>
+            <ol class="program">
+              @for (step of t.program; track $index) {
+                <li>
+                  <span class="program__time">{{ step.time }}</span>
+                  <span class="program__title">{{ step.title }}</span>
+                </li>
+              }
+            </ol>
+          </section>
+
+          <section class="block" aria-labelledby="audience-title">
+            <h2 id="audience-title">Public</h2>
+            <p>{{ t.audience }}</p>
+          </section>
+
+          <section class="block" aria-labelledby="venue-title">
+            <h2 id="venue-title">Lieu</h2>
+            @if (t.venue) {
+              <p>
+                <strong>{{ t.venue.name }}</strong><br />
+                {{ t.venue.address }}
+              </p>
+            } @else {
+              <p>Formation <strong>en ligne</strong> : le lien de connexion vous est envoyé par e-mail avant la séance.</p>
+            }
+          </section>
+
+          <!-- Inscription -->
+          <section id="inscription" class="block block--card" aria-labelledby="registration-title">
+            <h2 id="registration-title">Inscription</h2>
+
+            @switch (closedReason()) {
+              @case ('full') {
+                <p class="notice">
+                  Cette session est <strong>complète</strong>.
+                  <a [routerLink]="'/formations'" [queryParams]="{ type: t.licenceType }">
+                    Voir les autres sessions {{ t.licenceType }}
+                  </a>
+                </p>
+              }
+              @case ('deadline') {
+                <p class="notice">
+                  Les inscriptions sont <strong>clôturées</strong> depuis le
+                  {{ t.registrationDeadline | date: 'd MMMM' }}.
+                  <a routerLink="/formations">Voir les prochaines formations</a>
+                </p>
+              }
+              @default {
+                @if (status() === 'sent') {
+                  <div class="success" role="status">
+                    <span class="success__icon"><app-icon name="mail" [size]="28" /></span>
+                    <h3>Votre inscription est enregistrée</h3>
+                    <p>Vous allez recevoir un e-mail de confirmation avec toutes les informations pratiques.</p>
+                  </div>
+                } @else {
+                  <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+                    <p class="form__note">Les champs marqués <span aria-hidden="true">*</span> sont obligatoires.</p>
+
+                    <div class="form__row">
+                      <div class="field">
+                        <label for="r-first">Prénom <span aria-hidden="true">*</span></label>
+                        <input id="r-first" type="text" formControlName="firstName" autocomplete="given-name" required
+                          [attr.aria-invalid]="showError('firstName')" aria-describedby="r-first-err" />
+                        <p id="r-first-err" class="field__error">
+                          @if (showError('firstName')) { Veuillez indiquer votre prénom. }
+                        </p>
+                      </div>
+                      <div class="field">
+                        <label for="r-last">Nom <span aria-hidden="true">*</span></label>
+                        <input id="r-last" type="text" formControlName="lastName" autocomplete="family-name" required
+                          [attr.aria-invalid]="showError('lastName')" aria-describedby="r-last-err" />
+                        <p id="r-last-err" class="field__error">
+                          @if (showError('lastName')) { Veuillez indiquer votre nom. }
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="form__row">
+                      <div class="field">
+                        <label for="r-email">E-mail <span aria-hidden="true">*</span></label>
+                        <input id="r-email" type="email" formControlName="email" autocomplete="email" required
+                          [attr.aria-invalid]="showError('email')" aria-describedby="r-email-err" />
+                        <p id="r-email-err" class="field__error">
+                          @if (showError('email')) { Veuillez saisir une adresse e-mail valide. }
+                        </p>
+                      </div>
+                      <div class="field">
+                        <label for="r-phone">Téléphone <span aria-hidden="true">*</span></label>
+                        <input id="r-phone" type="tel" formControlName="phone" autocomplete="tel" required
+                          [attr.aria-invalid]="showError('phone')" aria-describedby="r-phone-err" />
+                        <p id="r-phone-err" class="field__error">
+                          @if (showError('phone')) { Veuillez indiquer un numéro de téléphone. }
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="form__row">
+                      <div class="field">
+                        <label for="r-licence">N° de phytolicence <small>(si vous en avez une)</small></label>
+                        <input id="r-licence" type="text" formControlName="licenceNumber" autocomplete="off" />
+                      </div>
+                      <div class="field">
+                        <label for="r-org">Entreprise / organisme <small>(facultatif)</small></label>
+                        <input id="r-org" type="text" formControlName="organization" autocomplete="organization" />
+                      </div>
+                    </div>
+
+                    <label class="consent">
+                      <input type="checkbox" formControlName="consent" />
+                      <span>
+                        J’accepte que Corder utilise ces informations pour gérer mon inscription.
+                        <span aria-hidden="true">*</span>
+                      </span>
+                    </label>
+                    @if (showError('consent')) {
+                      <p class="field__error">Veuillez accepter pour vous inscrire.</p>
+                    }
+
+                    @if (status() === 'error') {
+                      <p class="form__error" role="alert">
+                        L’inscription a échoué. Réessayez dans un instant ou
+                        <a routerLink="/contact">contactez-nous</a>.
+                      </p>
+                    }
+
+                    <button class="btn btn--cta btn--lg" type="submit" [disabled]="status() === 'sending'">
+                      @if (status() === 'sending') {
+                        Envoi en cours…
+                      } @else {
+                        Confirmer mon inscription
+                        @if (t.price > 0) {
+                          ({{ t.price | currency: 'EUR' : 'symbol' : '1.0-0' }})
+                        }
+                      }
+                    </button>
+                  </form>
+                }
+              }
+            }
+          </section>
+        </div>
+
+        <!-- Infos pratiques -->
+        <aside class="infos" aria-label="Informations pratiques">
+          <p class="infos__price">
+            {{ t.price === 0 ? 'Gratuit' : (t.price | currency: 'EUR' : 'symbol' : '1.0-0') }}
+          </p>
+
+          <dl class="infos__list">
+            <div>
+              <dt><app-icon name="calendar" [size]="18" /> <span class="visually-hidden">Date</span></dt>
+              <dd class="infos__date">{{ t.startsAt | date: 'EEEE d MMMM y' }}</dd>
+            </div>
+            <div>
+              <dt><app-icon name="clock" [size]="18" /> <span class="visually-hidden">Horaire</span></dt>
+              <dd>{{ t.startsAt | date: "H'h'mm" }} – {{ t.endsAt | date: "H'h'mm" }}</dd>
+            </div>
+            <div>
+              <dt><app-icon name="map-pin" [size]="18" /> <span class="visually-hidden">Lieu</span></dt>
+              <dd>{{ t.location }}</dd>
+            </div>
+          </dl>
+
+          <div class="seats">
+            @if (t.seatsLeft === 0) {
+              <strong>Complet</strong>
+            } @else {
+              <strong>{{ t.seatsLeft }} place{{ t.seatsLeft > 1 ? 's' : '' }} restante{{ t.seatsLeft > 1 ? 's' : '' }}</strong>
+              sur {{ t.capacity }}
+            }
+            <span class="seats__bar" aria-hidden="true"><span [style.width.%]="seatsPercent()"></span></span>
+          </div>
+
+          @if (status() === 'sent') {
+            <p class="infos__registered" role="status">
+              <app-icon name="check" [size]="18" [stroke]="2.5" /> Vous êtes inscrit à cette formation
+            </p>
+          } @else if (!closedReason()) {
+            <p class="infos__deadline">Inscriptions jusqu’au {{ t.registrationDeadline | date: 'd MMMM y' }}</p>
+            <a class="btn btn--cta btn--block btn--lg" [routerLink]="[]" fragment="inscription">S’inscrire</a>
+          } @else {
+            <a class="btn btn--outline btn--block" routerLink="/formations" [queryParams]="{ type: t.licenceType }">
+              Autres sessions {{ t.licenceType }}
+            </a>
+          }
+
+          <button class="infos__calendar" type="button" (click)="addToCalendar(t)">
+            <app-icon name="calendar" [size]="16" /> Ajouter à mon agenda
+          </button>
+        </aside>
+      </div>
+    }
+  </div>
+</section>

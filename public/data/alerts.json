@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "slug": "retrait-substance-active-dates-limites",
+      "title": "Retrait d’une substance active : vérifiez les dates limites d’utilisation de vos stocks",
+      "publishedAt": "2026-10-23T08:00:00+02:00",
+      "level": "urgent"
+    },
+    {
+      "id": 2,
+      "slug": "nouvelles-zones-tampons",
+      "title": "Nouvelles zones tampons le long des eaux de surface",
+      "publishedAt": "2026-10-10T08:00:00+02:00",
+      "level": "info"
+    },
+    {
+      "id": 3,
+      "slug": "liste-produits-particuliers",
+      "title": "Mise à jour de la liste des produits autorisés pour les particuliers",
+      "publishedAt": "2026-09-30T08:00:00+02:00",
+      "level": "info"
+    }
+  ],
+  "meta": { "total": 3 }
+}

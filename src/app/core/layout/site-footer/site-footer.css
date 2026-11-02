@@ -1,0 +1,182 @@
+.site-footer {
+  background-color: var(--c-navy-900);
+  color: var(--text-on-dark-soft);
+  font-size: 0.9375rem;
+}
+
+/* Liseré aux 4 couleurs du logo, signature de la charte */
+.site-footer::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--c-teal-600) 0 25%,
+    var(--c-brand-teal-light) 25% 50%,
+    var(--c-brand-logo-green) 50% 75%,
+    var(--c-gold-500) 75% 100%
+  );
+}
+
+.footer__grid {
+  display: grid;
+  gap: 2.5rem;
+  padding-block: 4rem 3rem;
+}
+
+/* Marque */
+.brand {
+  display: inline-flex;
+}
+
+.brand__logo {
+  width: auto;
+  height: 52px;
+}
+
+.footer__pitch {
+  max-width: 26rem;
+  margin: 1.25rem 0 1.5rem;
+  line-height: 1.65;
+}
+
+.footer__contact {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__contact li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.footer__contact app-icon {
+  margin-top: 0.15rem;
+  color: var(--c-green-100);
+}
+
+.footer__contact address {
+  font-style: normal;
+}
+
+/* Colonnes */
+.footer__title {
+  margin-bottom: 1.25rem;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.footer__list {
+  display: grid;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer__list a:hover,
+.footer__contact a:hover,
+.footer__legal a:hover {
+  color: #fff;
+}
+
+.footer__pole {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+/* Les accents « recherche » (marine) sont invisibles sur fond marine : on éclaircit le point */
+.footer__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px rgb(255 255 255 / 0.12);
+}
+
+.footer__pole[data-accent='recherche'] .footer__dot {
+  background: var(--c-navy-100);
+}
+
+.footer__note {
+  margin-bottom: 1rem;
+}
+
+.site-footer .footer__newsletter {
+  color: #fff;
+}
+
+.footer__social {
+  display: flex;
+  gap: 0.625rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__social a {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: rgb(255 255 255 / 0.07);
+  color: #fff;
+  transition: background-color 0.2s;
+}
+
+.footer__social a:hover {
+  background: var(--cta);
+}
+
+/* Bas de page */
+.footer__bottom {
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  font-size: var(--fs-sm);
+}
+
+.footer__bottom-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding-block: 1.5rem;
+}
+
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer__grid {
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+    gap: 3rem;
+  }
+}

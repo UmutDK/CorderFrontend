@@ -1,0 +1,280 @@
+.detail {
+  padding-top: clamp(1.5rem, 1.25rem + 1vw, 2.25rem);
+}
+
+.detail__grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.detail__skeleton-main {
+  min-height: 480px;
+}
+
+.detail__skeleton-aside {
+  min-height: 360px;
+}
+
+/* ---------- Contenu ---------- */
+
+.detail__main {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.block {
+  display: grid;
+  gap: 0.875rem;
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-card);
+}
+
+.block h2 {
+  font-size: 1.25rem;
+}
+
+.block p {
+  color: var(--text-soft);
+}
+
+.block--card {
+  box-shadow: var(--shadow-md);
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+.checklist {
+  display: grid;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checklist li {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.checklist app-icon {
+  margin-top: 0.1875rem;
+  color: var(--c-green-600);
+}
+
+/* Programme : petite frise verticale */
+.program {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Colonne heure (3.5rem) | puce centrée dans l'espace de 1.5rem | intitulé */
+.program li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: 1.5rem;
+  padding: 0 0 1rem;
+}
+
+.program li::before {
+  content: '';
+  position: absolute;
+  top: 0.5rem;
+  left: calc(3.5rem + 0.75rem - 4px);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.program li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 1.125rem;
+  bottom: 0.125rem;
+  left: calc(3.5rem + 0.75rem - 1px);
+  width: 2px;
+  background: var(--accent-soft);
+}
+
+.program__time {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  text-align: right;
+}
+
+
+.notice {
+  padding: 1rem 1.125rem;
+  border-radius: var(--r-md);
+  background: var(--c-sand-100);
+}
+
+.notice a {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ---------- Infos pratiques ---------- */
+
+.infos {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--accent);
+  border-radius: var(--r-lg);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-md);
+}
+
+.infos__price {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.infos__list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.infos__list div {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.infos__list dt {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent-tint);
+  color: var(--accent);
+}
+
+.infos__list dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.infos__date::first-letter {
+  text-transform: uppercase;
+}
+
+.seats {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
+}
+
+.seats strong {
+  color: var(--text);
+}
+
+.seats__bar {
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--r-pill);
+  background: var(--c-sand-200);
+}
+
+.seats__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+}
+
+.infos__deadline {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.infos__registered {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
+  border-radius: var(--r-md);
+  background: var(--c-green-50);
+  color: var(--c-green-700);
+  font-weight: 700;
+}
+
+.infos__calendar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  border: 0;
+  background: none;
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.infos__calendar:hover {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+/* ---------- Introuvable ---------- */
+
+.not-found {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  color: var(--text-soft);
+  text-align: center;
+}
+
+.not-found h2 {
+  font-size: 1.5rem;
+  color: var(--text);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (min-width: 1024px) {
+  .detail__grid {
+    grid-template-columns: minmax(0, 1fr) 20rem;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  /* Le bloc d'infos (court) reste visible pendant la lecture */
+  .infos {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+}
+
+/* Mobile : infos pratiques avant le contenu */
+@media (max-width: 1023px) {
+  .infos {
+    order: -1;
+  }
+}

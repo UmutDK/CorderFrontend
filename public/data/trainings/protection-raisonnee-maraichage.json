@@ -1,0 +1,44 @@
+{
+  "data": {
+    "id": 5,
+    "slug": "protection-raisonnee-maraichage",
+    "title": "Protection raisonnée des cultures maraîchères",
+    "startsAt": "2026-12-03T13:30:00+01:00",
+    "endsAt": "2026-12-03T17:00:00+01:00",
+    "location": "Gembloux",
+    "licenceType": "P2",
+    "price": 45,
+    "seatsLeft": 8,
+    "summary": "Une formation pratique pour actualiser vos connaissances et appliquer les principes de la protection intégrée dans votre activité.",
+    "audience": "Utilisateurs professionnels : agriculteurs, horticulteurs, gestionnaires d’espaces verts.",
+    "objectives": [
+      "Connaître la réglementation en vigueur et ses évolutions récentes",
+      "Réduire les risques pour la santé et l’environnement",
+      "Mettre en œuvre des alternatives et des bonnes pratiques adaptées à votre activité"
+    ],
+    "program": [
+      {
+        "time": "13h30",
+        "title": "Accueil et tour de table"
+      },
+      {
+        "time": "13h45",
+        "title": "Cadre réglementaire et actualités"
+      },
+      {
+        "time": "15h15",
+        "title": "Cas pratiques et bonnes pratiques"
+      },
+      {
+        "time": "16h30",
+        "title": "Questions-réponses et évaluation"
+      }
+    ],
+    "venue": {
+      "name": "Centre de formation — Gembloux",
+      "address": "Adresse précise communiquée avec la confirmation d’inscription"
+    },
+    "capacity": 25,
+    "registrationDeadline": "2026-11-28T23:59:00+01:00"
+  }
+}

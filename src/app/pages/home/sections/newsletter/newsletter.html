@@ -1,0 +1,60 @@
+<section class="newsletter surface-dark bg-cross-light" aria-labelledby="newsletter-title">
+  <div class="container newsletter__inner">
+    <div class="newsletter__text">
+      <span class="newsletter__eyebrow"><app-icon name="mail" [size]="16" /> Newsletter</span>
+      <h2 id="newsletter-title">Ne manquez aucune information importante</h2>
+      <ul class="newsletter__topics">
+        @for (topic of topics; track topic) {
+          <li>{{ topic }}</li>
+        }
+      </ul>
+    </div>
+
+    @if (status() === 'sent') {
+      <div class="newsletter__success" role="status">
+        <app-icon name="mail" [size]="24" />
+        <div>
+          <strong>Merci pour votre inscription !</strong>
+          <p>Vous recevrez un e-mail pour confirmer votre adresse.</p>
+        </div>
+      </div>
+    } @else {
+      <form class="newsletter__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <label class="visually-hidden" for="newsletter-email">Adresse e-mail</label>
+        <div class="newsletter__field">
+          <input
+            id="newsletter-email"
+            type="email"
+            formControlName="email"
+            placeholder="votre@adresse.be"
+            autocomplete="email"
+            [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+            aria-describedby="newsletter-email-error"
+          />
+          <button class="btn btn--cta" type="submit" [disabled]="status() === 'sending'">
+            {{ status() === 'sending' ? 'Envoi…' : 'S’inscrire' }}
+          </button>
+        </div>
+        <p id="newsletter-email-error" class="newsletter__error" aria-live="polite">
+          @if (status() === 'error') {
+            L’inscription a échoué, veuillez réessayer dans un instant.
+          }
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            Veuillez saisir une adresse e-mail valide.
+          }
+        </p>
+
+        <label class="newsletter__consent">
+          <input type="checkbox" formControlName="consent" />
+          <span>
+            J’accepte que Corder utilise mon adresse pour m’envoyer sa newsletter. Désinscription
+            possible à tout moment.
+          </span>
+        </label>
+        @if (form.controls.consent.touched && form.controls.consent.invalid) {
+          <p class="newsletter__error">Veuillez accepter pour vous inscrire.</p>
+        }
+      </form>
+    }
+  </div>
+</section>

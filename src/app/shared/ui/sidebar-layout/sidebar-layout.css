@@ -1,0 +1,84 @@
+:host {
+  display: block;
+}
+
+.layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.layout__main {
+  min-width: 0;
+}
+
+/* ---------- Mobile : panneau repliable ---------- */
+
+.layout__toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--surface-card);
+  color: var(--text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.layout__badge {
+  display: grid;
+  place-items: center;
+  min-width: 1.375rem;
+  height: 1.375rem;
+  padding: 0 0.375rem;
+  border-radius: var(--r-pill);
+  background: var(--c-navy-800);
+  color: #fff;
+  font-size: var(--fs-xs);
+}
+
+.layout__chevron {
+  margin-left: auto;
+  transition: transform 0.25s var(--ease-out);
+}
+
+.layout__toggle[aria-expanded='true'] .layout__chevron {
+  transform: rotate(180deg);
+}
+
+.layout__panel {
+  display: none;
+  margin-top: 0.75rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-card);
+}
+
+.layout__panel.is-open {
+  display: block;
+}
+
+/* ---------- Bureau : colonne fixe ---------- */
+
+/* Pas de position collante : sur un écran peu haut, la colonne de filtres dépasse et
+   affichait une barre de défilement interne. Elle défile simplement avec la page. */
+@media (min-width: 1024px) {
+  .layout {
+    grid-template-columns: 18rem minmax(0, 1fr);
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .layout__toggle {
+    display: none;
+  }
+
+  .layout__panel {
+    display: block;
+    margin-top: 0;
+  }
+}

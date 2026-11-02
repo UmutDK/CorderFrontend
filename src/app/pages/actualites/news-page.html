@@ -1,0 +1,103 @@
+<app-page-header
+  heading="Actualités"
+  lead="Réglementation, observations de la Clinique des plantes, outils et formations : toute l’actualité de Corder."
+  [crumbs]="[{ label: 'Actualités' }]"
+/>
+
+<section class="section surface-sand news-page" aria-labelledby="news-list-title">
+  <div class="container news-layout">
+    <div class="news-main">
+      <!-- Catégories (filtre dans l'URL) -->
+      <nav class="cats" aria-label="Catégories d’actualités">
+        <a class="chip" routerLink="/actualites" [attr.aria-current]="!category() ? 'page' : null"
+          [class.is-active]="!category()">Toutes</a>
+        @for (c of categories(); track c.slug) {
+          <a
+            class="chip"
+            routerLink="/actualites"
+            [queryParams]="{ categorie: c.slug }"
+            [class.is-active]="category() === c.slug"
+            [attr.aria-current]="category() === c.slug ? 'page' : null"
+          >
+            {{ c.label }} <span class="cats__count">{{ c.count }}</span>
+          </a>
+        }
+      </nav>
+
+      <h2 id="news-list-title" class="visually-hidden">
+        {{ categoryLabel() ? 'Actualités : ' + categoryLabel() : 'Toutes les actualités' }}
+      </h2>
+
+      @let s = state();
+      @if (s.status === 'loading') {
+        <div class="skeleton list-skeleton" aria-busy="true"></div>
+      } @else if (s.status === 'error') {
+        <p class="load-error">Les actualités ne peuvent pas être chargées pour le moment. Réessayez plus tard.</p>
+      } @else {
+        <p class="results" aria-live="polite">
+          <strong>{{ total() }}</strong> article{{ total() > 1 ? 's' : '' }}
+          @if (categoryLabel()) {
+            dans « {{ categoryLabel() }} »
+          }
+        </p>
+
+        @if (featured(); as article) {
+          <app-article-card class="featured" [article]="article" [featured]="true" />
+        }
+
+        @if (visible().length) {
+          <div class="grid">
+            @for (article of visible(); track article.id) {
+              <app-article-card [article]="article" />
+            }
+          </div>
+        } @else if (!featured()) {
+          <div class="empty">
+            <app-icon name="file-text" [size]="28" />
+            <p>Aucun article dans cette catégorie pour le moment.</p>
+            <a class="btn btn--outline" routerLink="/actualites">Voir toutes les actualités</a>
+          </div>
+        }
+
+        @if (remaining() > 0) {
+          <div class="more">
+            <button class="btn btn--outline btn--lg" type="button" (click)="showMore()">
+              Afficher plus d’articles ({{ remaining() }})
+            </button>
+          </div>
+        }
+      }
+    </div>
+
+    <!-- Alertes réglementaires -->
+    <aside class="alerts" aria-labelledby="alerts-title">
+      <div class="alerts__head">
+        <span class="alerts__icon"><app-icon name="shield" [size]="20" /></span>
+        <h2 id="alerts-title">Alertes réglementaires</h2>
+      </div>
+      @let a = alertsState();
+      @if (a.status === 'loading') {
+        <div class="skeleton alerts-skeleton" aria-hidden="true"></div>
+      } @else if (a.status === 'error') {
+        <p class="alerts__empty">Les alertes ne peuvent pas être chargées pour le moment.</p>
+      } @else {
+        <ul class="alerts__list">
+          @for (alert of alerts(); track alert.id) {
+            <li class="alert" [class.alert--urgent]="alert.level === 'urgent'">
+              <div class="alert__meta">
+                <span class="alert__level">{{ alert.level === 'urgent' ? 'Important' : 'Info' }}</span>
+                <time [attr.datetime]="alert.publishedAt">{{ alert.publishedAt | date: 'd MMM y' }}</time>
+              </div>
+              <a class="alert__link" [routerLink]="['/actualites', alert.slug]">{{ alert.title }}</a>
+            </li>
+          } @empty {
+            <li class="alerts__empty">Aucune alerte en cours.</li>
+          }
+        </ul>
+      }
+      <a class="link-arrow alerts__more" routerLink="/legislation">
+        Consulter la législation <app-icon name="arrow-right" [size]="18" />
+      </a>
+    </aside>
+  </div>
+</section>

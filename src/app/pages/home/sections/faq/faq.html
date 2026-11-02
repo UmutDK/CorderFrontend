@@ -1,0 +1,42 @@
+<section id="faq" class="section surface-white" aria-labelledby="faq-title">
+  <div class="container faq">
+    <div class="faq__intro">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="faq-title">Questions fréquentes</h2>
+        <p>Les réponses aux questions que l’on nous pose le plus souvent.</p>
+      </div>
+
+      <div class="faq__help">
+        <span class="faq__help-icon"><app-icon name="message" [size]="22" /></span>
+        <div>
+          <strong>Vous ne trouvez pas votre réponse ?</strong>
+          <p>Notre équipe vous répond et oriente votre demande vers le bon service.</p>
+          <a class="link-arrow" routerLink="/" fragment="contact">
+            Poser une question <app-icon name="arrow-right" [size]="18" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accordéon natif : accessible au clavier sans JavaScript -->
+    <div class="faq__list">
+      @let s = state();
+      @if (s.status === 'loading') {
+        <div class="skeleton faq-skeleton" aria-busy="true"></div>
+      } @else if (s.status === 'error') {
+        <p class="load-error">Les questions fréquentes ne peuvent pas être chargées pour le moment.</p>
+      } @else {
+        @for (item of s.data; track item.id; let first = $first) {
+          <details class="faq__item" [open]="first">
+            <summary>
+              {{ item.question }}
+              <span class="faq__toggle" aria-hidden="true"></span>
+            </summary>
+            <p>{{ item.answer }}</p>
+          </details>
+        }
+      }
+    </div>
+  </div>
+</section>

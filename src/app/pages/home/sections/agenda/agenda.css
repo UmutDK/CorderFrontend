@@ -1,0 +1,89 @@
+.agenda-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.agenda-head .section-head {
+  margin-bottom: 0;
+}
+
+/* ---------- Filtres ---------- */
+
+.filters {
+  display: grid;
+  gap: 0.875rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--surface-card);
+}
+
+.filters__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filters__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 7.5rem;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.results {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0 1rem;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.results__reset {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.agenda-skeleton {
+  min-height: 520px;
+}
+
+/* ---------- Aucun résultat ---------- */
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-lg);
+  color: var(--text-soft);
+  text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (min-width: 768px) {
+  .filters {
+    padding: 1.25rem 1.5rem;
+  }
+}
+

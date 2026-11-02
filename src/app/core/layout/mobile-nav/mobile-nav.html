@@ -1,0 +1,86 @@
+<div class="backdrop" [class.is-open]="open()" (click)="closed.emit()" aria-hidden="true"></div>
+
+<div
+  id="mobile-nav"
+  class="drawer"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menu principal"
+  [class.is-open]="open()"
+  [attr.inert]="open() ? null : ''"
+>
+  <div class="drawer__head">
+    <img class="drawer__logo" src="brand/corder-logo.svg" alt="Corder" width="490" height="197" />
+    <button
+      #closeButton
+      type="button"
+      class="drawer__close"
+      aria-label="Fermer le menu"
+      (click)="closed.emit()"
+    >
+      <app-icon name="x" [size]="24" />
+    </button>
+  </div>
+
+  <nav class="drawer__body" aria-label="Navigation mobile">
+    <ul class="drawer__list">
+      @for (item of nav; track item.label; let i = $index) {
+        <li class="drawer__entry">
+          @if (item.mega; as mega) {
+            <button
+              type="button"
+              class="drawer__item"
+              [attr.aria-expanded]="expanded() === i"
+              [attr.aria-controls]="'drawer-sub-' + i"
+              (click)="toggle(i)"
+            >
+              {{ item.label }}
+              <app-icon name="chevron-down" [size]="20" />
+            </button>
+            <div class="drawer__sub" [id]="'drawer-sub-' + i" [class.is-open]="expanded() === i">
+              <div class="drawer__sub-inner">
+                @for (group of mega.groups; track $index) {
+                  @if (group.title) {
+                    <p class="drawer__group-title">{{ group.title }}</p>
+                  }
+                  <ul class="drawer__sublist">
+                    @for (link of group.links; track link.label) {
+                      <li>
+                        @if (link.href) {
+                          <a class="drawer__sublink" [href]="link.href" target="_blank" rel="noopener">
+                            {{ link.label }}
+                            <app-icon name="external-link" [size]="14" />
+                            <span class="visually-hidden">(nouvel onglet)</span>
+                          </a>
+                        } @else {
+                          <a class="drawer__sublink" [routerLink]="link.route" [attr.data-accent]="link.accent">
+                            @if (link.accent) {
+                              <span class="drawer__dot" aria-hidden="true"></span>
+                            }
+                            {{ link.label }}
+                          </a>
+                        }
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+            </div>
+          } @else {
+            <a class="drawer__item" [routerLink]="item.route">{{ item.label }}</a>
+          }
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <div class="drawer__foot">
+    <a class="btn btn--cta btn--block btn--lg" routerLink="/contact">Poser une question</a>
+    <div class="drawer__quick">
+      @for (link of quickLinks; track link.label) {
+        <a [routerLink]="link.route">{{ link.label }}</a>
+      }
+      <a routerLink="/connexion"><app-icon name="user" [size]="16" /> Se connecter</a>
+    </div>
+  </div>
+</div>

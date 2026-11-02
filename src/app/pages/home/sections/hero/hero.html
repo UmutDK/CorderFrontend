@@ -1,0 +1,65 @@
+<section class="hero bg-cross" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__content">
+      <span class="hero__badge">
+        <span class="hero__badge-icon"><app-icon name="leaf" [size]="14" /></span>
+        Recherche, information et accompagnement du monde rural
+      </span>
+
+      <h1 id="hero-title" class="hero__title">
+        Pour une <em>protection intégrée</em> des plantes et une agriculture durable
+      </h1>
+
+      <p class="hero__lead">
+        L’ASBL Corder s’intègre dans une série de démarches visant à favoriser la protection durable
+        des végétaux. Elle s’adresse aux différents acteurs du monde rural wallon.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn btn--cta btn--lg" routerLink="/" fragment="que-faire">
+          Trouver le bon service <app-icon name="arrow-right" [size]="18" />
+        </a>
+        <a class="btn btn--outline btn--lg" routerLink="/actualites">Actualités réglementaires</a>
+      </div>
+
+      <ul class="hero__poles" aria-label="Nos pôles">
+        @for (pole of poles; track pole.label) {
+          <li>
+            <a [routerLink]="pole.route" [attr.data-accent]="pole.accent">
+              <span class="hero__dot" aria-hidden="true"></span>{{ pole.label }}
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="hero__visual">
+      <div class="hero__shape bg-cross-light" aria-hidden="true"></div>
+      <img
+        class="hero__img"
+        src="images/hero-champ.jpg"
+        alt="Jeunes plants de maïs alignés dans un champ, au soleil"
+        width="1400"
+        height="933"
+        fetchpriority="high"
+      />
+
+      <a class="hero__float hero__float--alert" routerLink="/actualites">
+        <span class="hero__pulse" aria-hidden="true"></span>
+        <span>
+          <small>À la une</small>
+          <strong>Phytolicences : échéances 2027-2028</strong>
+        </span>
+        <app-icon name="arrow-right" [size]="16" />
+      </a>
+
+      <div class="hero__float hero__float--service" data-accent="clinique">
+        <span class="hero__float-icon"><app-icon name="sprout" [size]="20" /></span>
+        <span>
+          <strong>Clinique des plantes</strong>
+          <small class="hero__float-sub">Analyses et diagnostic, ouverts à tous</small>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>

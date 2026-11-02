@@ -1,0 +1,138 @@
+.formations {
+  padding-top: clamp(1.5rem, 1.25rem + 1vw, 2.25rem);
+}
+
+/* ---------- Filtres (barre latérale) ---------- */
+
+.filters {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.filters__block {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.filters__title {
+  margin-bottom: 0.25rem;
+  padding: 0;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.filters__search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  background: var(--surface-card);
+  color: var(--text-muted);
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.filters__search:focus-within {
+  border-color: var(--c-navy-800);
+  box-shadow: 0 0 0 4px var(--c-navy-100);
+}
+
+.filters__search input {
+  flex: 1;
+  min-width: 0;
+  height: 2.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+}
+
+.filters__search input:focus {
+  outline: none;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.option input {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin: 0.125rem 0 0;
+  accent-color: var(--c-navy-800);
+}
+
+.option strong {
+  margin-right: 0.375rem;
+}
+
+.option small {
+  display: block;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+.option--switch {
+  font-weight: 600;
+}
+
+.filters__help {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1rem;
+  border-radius: var(--r-md);
+  background: var(--accent-tint);
+  font-size: var(--fs-sm);
+}
+
+.filters__help p {
+  color: var(--text-soft);
+}
+
+/* ---------- Résultats ---------- */
+
+.results {
+  margin-bottom: 1.25rem;
+  color: var(--text-soft);
+}
+
+.results strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--text);
+}
+
+.results-skeleton {
+  min-height: 560px;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--r-lg);
+  color: var(--text-soft);
+  text-align: center;
+}

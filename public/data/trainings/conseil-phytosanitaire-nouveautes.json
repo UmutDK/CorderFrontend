@@ -1,0 +1,41 @@
+{
+  "data": {
+    "id": 6,
+    "slug": "conseil-phytosanitaire-nouveautes",
+    "title": "Conseil phytosanitaire : nouveautés législatives",
+    "startsAt": "2026-12-08T09:00:00+01:00",
+    "endsAt": "2026-12-08T12:30:00+01:00",
+    "location": "En ligne",
+    "licenceType": "P3",
+    "price": 60,
+    "seatsLeft": 15,
+    "summary": "Une formation pratique pour actualiser vos connaissances et appliquer les principes de la protection intégrée dans votre activité.",
+    "audience": "Distributeurs et conseillers de produits phytopharmaceutiques à usage professionnel.",
+    "objectives": [
+      "Connaître la réglementation en vigueur et ses évolutions récentes",
+      "Réduire les risques pour la santé et l’environnement",
+      "Mettre en œuvre des alternatives et des bonnes pratiques adaptées à votre activité"
+    ],
+    "program": [
+      {
+        "time": "9h00",
+        "title": "Accueil et tour de table"
+      },
+      {
+        "time": "9h15",
+        "title": "Cadre réglementaire et actualités"
+      },
+      {
+        "time": "10h45",
+        "title": "Cas pratiques et bonnes pratiques"
+      },
+      {
+        "time": "12h00",
+        "title": "Questions-réponses et évaluation"
+      }
+    ],
+    "venue": null,
+    "capacity": 25,
+    "registrationDeadline": "2026-12-03T23:59:00+01:00"
+  }
+}

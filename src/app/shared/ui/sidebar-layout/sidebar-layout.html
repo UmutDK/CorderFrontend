@@ -1,0 +1,26 @@
+<div class="container layout">
+  <aside class="layout__aside" [attr.aria-label]="label()">
+    <button
+      class="layout__toggle"
+      type="button"
+      [attr.aria-expanded]="open()"
+      [attr.aria-controls]="panelId"
+      (click)="open.update((v) => !v)"
+    >
+      <app-icon [name]="icon()" [size]="18" />
+      {{ label() }}
+      @if (badge()) {
+        <span class="layout__badge">{{ badge() }}</span>
+      }
+      <app-icon class="layout__chevron" name="chevron-down" [size]="18" />
+    </button>
+
+    <div class="layout__panel" [id]="panelId" [class.is-open]="open()">
+      <ng-content select="[sidebar]" />
+    </div>
+  </aside>
+
+  <div class="layout__main">
+    <ng-content />
+  </div>
+</div>

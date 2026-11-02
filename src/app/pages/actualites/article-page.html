@@ -1,0 +1,85 @@
+@let s = state();
+@let a = article();
+
+<app-page-header
+  [heading]="a?.title ?? (s.status === 'error' ? 'Article introuvable' : 'Actualité')"
+  [eyebrow]="eyebrow()"
+  [crumbs]="[{ label: 'Actualités', route: '/actualites' }, { label: a?.title ?? 'Article' }]"
+/>
+
+<section class="section surface-white article" [attr.data-accent]="a?.pole">
+  <div class="container">
+    @if (s.status === 'loading') {
+      <div class="skeleton article__skeleton" aria-busy="true"></div>
+    } @else if (s.status === 'error' || !a) {
+      <div class="not-found">
+        <app-icon name="file-text" [size]="32" />
+        <h2>Cet article est introuvable</h2>
+        <p>Il a peut-être été retiré, ou le lien est incorrect.</p>
+        <a class="btn btn--cta" routerLink="/actualites">Voir toutes les actualités</a>
+      </div>
+    } @else {
+      <div class="article__grid">
+        <article class="article__main">
+          @if (a.image) {
+            <img class="article__image" [src]="a.image.url" [alt]="a.image.alt" width="1200" height="700" />
+          }
+
+          <p class="article__lead">{{ a.excerpt }}</p>
+
+          <!-- HTML de l'administration, nettoyé par Angular (scripts et attributs dangereux retirés) -->
+          <div class="prose" [innerHTML]="a.body" (click)="onContentClick($event)"></div>
+
+          @if (a.updatedAt) {
+            <p class="article__updated">
+              Mis à jour le <time [attr.datetime]="a.updatedAt">{{ a.updatedAt | date: 'd MMMM y' }}</time>
+            </p>
+          }
+        </article>
+
+        <aside class="article__aside" aria-label="Partager et naviguer">
+          <div class="share">
+            <h2 class="share__title">Partager</h2>
+            <div class="share__buttons">
+              <a class="share__btn" [href]="shareLink('linkedin')" target="_blank" rel="noopener" aria-label="Partager sur LinkedIn">
+                <app-icon name="linkedin" [size]="18" />
+              </a>
+              <a class="share__btn" [href]="shareLink('facebook')" target="_blank" rel="noopener" aria-label="Partager sur Facebook">
+                <app-icon name="facebook" [size]="18" />
+              </a>
+              <a class="share__btn" [href]="shareLink('email')" aria-label="Envoyer par e-mail">
+                <app-icon name="mail" [size]="18" />
+              </a>
+              <button class="share__btn share__btn--copy" type="button" (click)="copyLink()">
+                <app-icon [name]="copied() ? 'check' : 'external-link'" [size]="18" />
+                <span aria-live="polite">{{ copied() ? 'Lien copié' : 'Copier le lien' }}</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="back">
+            <span class="back__label">Plus d’articles</span>
+            <!-- Les alertes ne sont pas dans la liste des articles : pas de lien vers une catégorie vide -->
+            @if (a.category.slug !== 'alertes') {
+              <a [routerLink]="'/actualites'" [queryParams]="{ categorie: a.category.slug }">{{ a.category.label }}</a>
+            }
+            <a routerLink="/actualites">Toutes les actualités</a>
+          </div>
+        </aside>
+      </div>
+    }
+  </div>
+</section>
+
+@if (a && related().length) {
+  <section class="section surface-sand related" aria-labelledby="related-title">
+    <div class="container">
+      <h2 id="related-title" class="related__title">À lire aussi</h2>
+      <div class="related__grid">
+        @for (item of related(); track item.id) {
+          <app-article-card [article]="item" />
+        }
+      </div>
+    </div>
+  </section>
+}

@@ -1,0 +1,21 @@
+{
+  "data": {
+    "id": 1,
+    "slug": "phytolicences-echeances-2027-2028",
+    "title": "Phytolicences : préparez le renouvellement des échéances 2027-2028",
+    "excerpt": "De nombreuses phytolicences arrivent à échéance. Vérifiez votre date d’expiration et planifiez dès maintenant les formations continues nécessaires.",
+    "publishedAt": "2026-10-21T10:00:00+02:00",
+    "category": {
+      "slug": "phytolicence",
+      "label": "Phytolicence"
+    },
+    "pole": "phytolicence",
+    "image": {
+      "url": "images/hero-champ.jpg",
+      "alt": ""
+    },
+    "featured": true,
+    "body": "<h2>Ce qu’il faut retenir</h2>\n<ul><li>Les principaux changements et leur calendrier d’entrée en vigueur.</li><li>Les personnes et les activités concernées.</li><li>Les démarches à prévoir dès maintenant.</li></ul>\n<h2>En pratique</h2>\n<p>Ce texte est un <strong>contenu d’exemple</strong> : il sera remplacé par l’article rédigé par l’équipe Corder depuis l’administration du site.</p>\n<blockquote>Anticiper permet d’éviter les mauvaises surprises lors des contrôles.</blockquote>\n<h3>Pour aller plus loin</h3>\n<p>Consultez notre <a href=\"/formations\">agenda des formations</a> ou <a href=\"/contact\">posez-nous votre question</a>.</p>",
+    "updatedAt": null
+  }
+}

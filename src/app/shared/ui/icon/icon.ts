@@ -1,0 +1,126 @@
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+
+// Icônes au trait (style Lucide), 24×24. Ajouter une entrée ici pour une nouvelle icône.
+const ICONS = {
+  search: ['M11 3a8 8 0 1 0 0 16a8 8 0 1 0 0-16z', 'm21 21-4.3-4.3'],
+  'chevron-down': ['m6 9 6 6 6-6'],
+  'chevron-right': ['m9 18 6-6-6-6'],
+  'arrow-right': ['M5 12h14', 'm12 5 7 7-7 7'],
+  menu: ['M4 6h16', 'M4 12h16', 'M4 18h16'],
+  x: ['M18 6 6 18', 'm6 6 12 12'],
+  user: ['M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2', 'M12 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8z'],
+  phone: [
+    'M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z',
+  ],
+  mail: ['M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z', 'm22 6-10 7L2 6'],
+  'map-pin': ['M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z', 'M12 7a3 3 0 1 0 0 6a3 3 0 1 0 0-6z'],
+  'external-link': ['M15 3h6v6', 'M10 14 21 3', 'M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'],
+  sprout: [
+    'M7 20h10',
+    'M10 20c5.5-2.5.8-6.4 3-10',
+    'M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z',
+    'M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z',
+  ],
+  leaf: [
+    'M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z',
+    'M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12',
+  ],
+  shield: [
+    'M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z',
+  ],
+  book: ['M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20'],
+  database: [
+    'M3 5c0-1.66 4-3 9-3s9 1.34 9 3-4 3-9 3-9-1.34-9-3z',
+    'M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5',
+    'M3 12c0 1.66 4 3 9 3s9-1.34 9-3',
+  ],
+  flask: [
+    'M10 2v7.53a2 2 0 0 1-.21.9L4.72 20.55a1 1 0 0 0 .9 1.45h12.76a1 1 0 0 0 .9-1.45l-5.07-10.12A2 2 0 0 1 14 9.53V2',
+    'M8.5 2h7',
+    'M7 16h10',
+  ],
+  'graduation-cap': ['M22 10 12 5 2 10l10 5 10-5z', 'M6 12v5c3 3 9 3 12 0v-5', 'M22 10v6'],
+  calendar: [
+    'M8 2v4',
+    'M16 2v4',
+    'M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z',
+    'M3 10h18',
+  ],
+  users: [
+    'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2',
+    'M9 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8z',
+    'M22 21v-2a4 4 0 0 0-3-3.87',
+    'M16 3.13a4 4 0 0 1 0 7.75',
+  ],
+  heart: [
+    'M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z',
+  ],
+  clock: ['M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20z', 'M12 6v6l4 2'],
+  check: ['M20 6 9 17l-5-5'],
+  chart: ['M3 3v18h18', 'M18 17V9', 'M13 17V5', 'M8 17v-3'],
+  'file-text': [
+    'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z',
+    'M14 2v4a2 2 0 0 0 2 2h4',
+    'M16 13H8',
+    'M16 17H8',
+    'M10 9H8',
+  ],
+  help: ['M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20z', 'M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3', 'M12 17h.01'],
+  message: ['M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z', 'M8 9h8', 'M8 13h5'],
+  sliders: [
+    'M21 4h-7',
+    'M10 4H3',
+    'M21 12h-9',
+    'M8 12H3',
+    'M21 20h-5',
+    'M12 20H3',
+    'M14 2v4',
+    'M8 10v4',
+    'M16 18v4',
+  ],
+  compass: ['M12 2a10 10 0 1 0 0 20a10 10 0 1 0 0-20z', 'm16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z'],
+  facebook: ['M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'],
+  linkedin: [
+    'M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z',
+    'M2 9h4v12H2z',
+    'M4 2a2 2 0 1 0 0 4a2 2 0 1 0 0-4z',
+  ],
+} satisfies Record<string, readonly string[]>;
+
+export type IconName = keyof typeof ICONS;
+
+@Component({
+  selector: 'app-icon',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <svg
+      [attr.width]="size()"
+      [attr.height]="size()"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      [attr.stroke-width]="stroke()"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      @for (d of paths(); track $index) {
+        <svg:path [attr.d]="d" />
+      }
+    </svg>
+  `,
+  styles: `
+    :host {
+      display: inline-flex;
+      flex-shrink: 0;
+    }
+  `,
+})
+export class Icon {
+  readonly name = input.required<IconName>();
+  readonly size = input(20);
+  readonly stroke = input(2);
+
+  protected readonly paths = computed(() => ICONS[this.name()]);
+}

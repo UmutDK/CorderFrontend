@@ -1,0 +1,27 @@
+<header class="page-header surface-dark bg-cross-light" [class.page-header--overlap]="overlap()">
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Fil d’Ariane">
+      <ol>
+        <li><a routerLink="/">Accueil</a></li>
+        @for (crumb of crumbs(); track crumb.label; let last = $last) {
+          <li>
+            @if (crumb.route && !last) {
+              <a [routerLink]="crumb.route">{{ crumb.label }}</a>
+            } @else {
+              <span [attr.aria-current]="last ? 'page' : null">{{ crumb.label }}</span>
+            }
+          </li>
+        }
+      </ol>
+    </nav>
+
+    @if (eyebrow()) {
+      <span class="page-header__eyebrow">{{ eyebrow() }}</span>
+    }
+    <h1>{{ heading() }}</h1>
+    @if (lead()) {
+      <p class="page-header__lead">{{ lead() }}</p>
+    }
+    <ng-content />
+  </div>
+</header>

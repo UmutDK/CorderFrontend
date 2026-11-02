@@ -1,0 +1,13 @@
+{
+  "data": [
+    { "id": 1, "slug": "lutte-integree-grandes-cultures", "title": "Formation continue : lutte intégrée en grandes cultures", "startsAt": "2026-11-05T09:00:00+01:00", "endsAt": "2026-11-05T12:30:00+01:00", "location": "Gembloux", "licenceType": "P2", "price": 45, "seatsLeft": 0 },
+    { "id": 2, "slug": "utilisation-sure-espaces-verts", "title": "Utilisation sûre des produits en espaces verts", "startsAt": "2026-11-12T13:30:00+01:00", "endsAt": "2026-11-12T17:00:00+01:00", "location": "Namur", "licenceType": "P1", "price": 45, "seatsLeft": 3 },
+    { "id": 3, "slug": "reglementation-conseil-vente", "title": "Réglementation et conseil à la vente", "startsAt": "2026-11-17T09:00:00+01:00", "endsAt": "2026-11-17T16:00:00+01:00", "location": "En ligne", "licenceType": "NP", "price": 0, "seatsLeft": 24 },
+    { "id": 4, "slug": "pulverisation-reglage-controle", "title": "Pulvérisation : réglage et contrôle du matériel", "startsAt": "2026-11-25T09:00:00+01:00", "endsAt": "2026-11-25T12:30:00+01:00", "location": "Libramont", "licenceType": "P2", "price": 45, "seatsLeft": 12 },
+    { "id": 5, "slug": "protection-raisonnee-maraichage", "title": "Protection raisonnée des cultures maraîchères", "startsAt": "2026-12-03T13:30:00+01:00", "endsAt": "2026-12-03T17:00:00+01:00", "location": "Gembloux", "licenceType": "P2", "price": 45, "seatsLeft": 8 },
+    { "id": 6, "slug": "conseil-phytosanitaire-nouveautes", "title": "Conseil phytosanitaire : nouveautés législatives", "startsAt": "2026-12-08T09:00:00+01:00", "endsAt": "2026-12-08T12:30:00+01:00", "location": "En ligne", "licenceType": "P3", "price": 60, "seatsLeft": 15 },
+    { "id": 7, "slug": "alternatives-herbicides-zones-publiques", "title": "Alternatives aux herbicides en zones publiques", "startsAt": "2027-01-14T09:00:00+01:00", "endsAt": "2027-01-14T16:00:00+01:00", "location": "Namur", "licenceType": "P1", "price": 45, "seatsLeft": 0 },
+    { "id": 8, "slug": "formation-initiale-p2-module-1", "title": "Formation initiale phytolicence P2 (module 1)", "startsAt": "2027-01-19T09:00:00+01:00", "endsAt": "2027-01-19T16:00:00+01:00", "location": "Libramont", "licenceType": "P2", "price": 90, "seatsLeft": 20 }
+  ],
+  "meta": { "total": 8 }
+}
