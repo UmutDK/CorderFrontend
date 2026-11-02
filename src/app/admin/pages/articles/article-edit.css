@@ -1,0 +1,66 @@
+/* Adresse : préfixe fixe + champ */
+.slug {
+  display: flex;
+  align-items: stretch;
+}
+
+.slug__prefix {
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--border-strong);
+  border-right: 0;
+  border-radius: var(--r-sm) 0 0 var(--r-sm);
+  background: var(--c-sand-100);
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+}
+
+.slug input {
+  min-width: 0;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+/* Image */
+.preview {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--r-sm);
+  background: var(--c-sand-100);
+}
+
+.upload {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  padding: 1.5rem 1rem;
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--r-sm);
+  color: var(--text-soft);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.upload:hover,
+.upload:has(:focus-visible) {
+  border-color: var(--c-navy-800);
+  background: var(--c-sand-50);
+}
+
+.upload.is-busy {
+  cursor: progress;
+}
+
+.upload strong {
+  color: var(--text);
+  font-size: var(--fs-sm);
+}
+
+.upload small {
+  font-size: var(--fs-xs);
+}

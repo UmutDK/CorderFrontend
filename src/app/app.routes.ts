@@ -1,6 +1,9 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [
+import { PublicLayout } from './core/layout/public-layout/public-layout';
+
+/** Pages du site public, affichées dans le cadre en-tête + pied de page */
+const publicRoutes: Routes = [
   {
     path: '',
     title: 'Corder ASBL — Coordination Recherche et Développement Rural',
@@ -45,4 +48,13 @@ export const routes: Routes = [
     title: 'Page en construction — Corder ASBL',
     loadComponent: () => import('./pages/placeholder/placeholder').then((m) => m.Placeholder),
   },
+];
+
+export const routes: Routes = [
+  {
+    // Administration : cadre et pages propres, chargés seulement quand on y va
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes').then((m) => m.ADMIN_ROUTES),
+  },
+  { path: '', component: PublicLayout, children: publicRoutes },
 ];

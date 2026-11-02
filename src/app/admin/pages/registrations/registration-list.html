@@ -1,0 +1,218 @@
+<header class="admin-head">
+  <div>
+    <h1>Inscriptions</h1>
+    @if (selected(); as t) {
+      <p class="admin-head__meta">
+        <span>
+          <strong>{{ t.title }}</strong> · {{ t.startsAt | date: 'EEEE d MMMM y' }} · {{ t.location }}
+        </span>
+        <span class="seats" [class.is-full]="t.registered >= t.capacity">
+          {{ t.registered }} / {{ t.capacity }} places
+        </span>
+        <a class="admin-view-link" [routerLink]="['/admin/formations', t.id]">Fiche de la formation</a>
+      </p>
+    } @else {
+      <p>Toutes les inscriptions aux formations, les plus récentes d’abord.</p>
+    }
+  </div>
+  <div class="head-actions">
+    <a class="btn btn--outline" [href]="exportUrl()" download>
+      <app-icon name="upload" [size]="18" class="flip" />
+      Exporter pour Excel
+    </a>
+    @if (selected()) {
+      <button class="btn btn--cta" type="button" (click)="openAdd()">
+        <app-icon name="plus" [size]="18" />
+        Ajouter un inscrit
+      </button>
+    }
+  </div>
+</header>
+
+<div class="admin-filters">
+  <div class="field training-filter">
+    <label for="reg-training" class="visually-hidden">Formation</label>
+    <select id="reg-training" [value]="formation() ?? ''" (change)="selectTraining($any($event.target).value)">
+      <option value="">Toutes les formations</option>
+      @if (trainingOptions().upcoming.length) {
+        <optgroup label="À venir">
+          @for (t of trainingOptions().upcoming; track t.id) {
+            <option [value]="t.id" [selected]="t.id === trainingId()">
+              {{ t.startsAt | date: 'd/MM/y' }} — {{ t.title }} ({{ t.registered }}/{{ t.capacity }})
+            </option>
+          }
+        </optgroup>
+      }
+      @if (trainingOptions().past.length) {
+        <optgroup label="Passées">
+          @for (t of trainingOptions().past; track t.id) {
+            <option [value]="t.id" [selected]="t.id === trainingId()">
+              {{ t.startsAt | date: 'd/MM/y' }} — {{ t.title }}
+            </option>
+          }
+        </optgroup>
+      }
+    </select>
+  </div>
+  <div class="field admin-filters__search">
+    <label for="reg-q" class="visually-hidden">Rechercher</label>
+    <app-icon name="search" [size]="18" />
+    <input
+      id="reg-q"
+      type="search"
+      placeholder="Nom, e-mail, téléphone, organisation…"
+      [value]="query()"
+      (input)="query.set($any($event.target).value)"
+    />
+  </div>
+</div>
+
+@let s = state();
+@switch (s.status) {
+  @case ('loading') {
+    <div class="skeleton admin-list-skeleton" aria-busy="true"></div>
+  }
+  @case ('error') {
+    <p class="load-error">La liste n’a pas pu être chargée.</p>
+  }
+  @case ('success') {
+    <p class="admin-count" role="status">
+      {{ rows().length }} {{ rows().length > 1 ? 'inscriptions' : 'inscription' }}
+      @if (rows().length !== s.data.length) {
+        sur {{ s.data.length }}
+      }
+    </p>
+
+    @if (rows().length) {
+      <div class="admin-card admin-table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th scope="col">Participant</th>
+              @if (!selected()) {
+                <th scope="col">Formation</th>
+              }
+              <th scope="col">Phytolicence · organisation</th>
+              <th scope="col">Inscrit le</th>
+              <th scope="col"><span class="visually-hidden">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (r of rows(); track r.id) {
+              <tr>
+                <td class="admin-table__title">
+                  <strong class="name">{{ r.firstName }} {{ r.lastName }}</strong>
+                  <span class="admin-table__meta">
+                    <a [href]="'mailto:' + r.email">{{ r.email }}</a> ·
+                    <a [href]="'tel:' + r.phone.replaceAll(' ', '')">{{ r.phone }}</a>
+                  </span>
+                </td>
+                @if (!selected()) {
+                  <td>
+                    <a class="training-link" routerLink="." [queryParams]="{ formation: r.training.id }">
+                      {{ r.training.title }}
+                    </a>
+                    <span class="admin-table__meta">{{ r.training.startsAt | date: 'd MMM y' }}</span>
+                  </td>
+                }
+                <td class="muted">
+                  {{ r.licenceNumber ?? '—' }}
+                  @if (r.organization) {
+                    <span class="admin-table__meta">{{ r.organization }}</span>
+                  }
+                </td>
+                <td class="admin-table__date">{{ r.createdAt | date: 'd MMM y, HH:mm' }}</td>
+                <td class="admin-table__actions">
+                  <button
+                    class="admin-ghost admin-ghost--danger"
+                    type="button"
+                    (click)="askCancel(r)"
+                    [attr.aria-label]="'Annuler l’inscription de ' + r.firstName + ' ' + r.lastName"
+                  >
+                    <app-icon name="x" [size]="16" />
+                    Annuler
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="load-error">
+        {{ query() ? 'Aucune inscription ne correspond à cette recherche.' : 'Aucune inscription pour le moment.' }}
+      </p>
+    }
+  }
+}
+
+<app-confirm-dialog
+  heading="Annuler cette inscription ?"
+  confirmLabel="Annuler l’inscription"
+  busyLabel="Annulation…"
+  [busy]="cancelling()"
+  (confirmed)="confirmCancel()"
+  (closed)="toCancel.set(null)"
+>
+  @if (toCancel(); as r) {
+    <p>
+      {{ r.firstName }} {{ r.lastName }} sera retiré de « {{ r.training.title }} » et sa place sera libérée.
+      Aucun e-mail n’est envoyé : prévenez la personne si nécessaire.
+    </p>
+  }
+</app-confirm-dialog>
+
+<dialog #add class="add-dialog" aria-labelledby="add-title">
+  <h2 id="add-title">Ajouter un inscrit</h2>
+  @if (selected(); as t) {
+    <p class="add-dialog__lead">{{ t.title }} · {{ t.startsAt | date: 'd MMMM y' }}</p>
+  }
+  <form class="form" [formGroup]="addForm" (ngSubmit)="submitAdd()" novalidate>
+    <div class="form__row">
+      <div class="field">
+        <label for="add-first">Prénom <span aria-hidden="true">*</span></label>
+        <input id="add-first" type="text" formControlName="firstName" [attr.aria-invalid]="showAddError('firstName')" />
+      </div>
+      <div class="field">
+        <label for="add-last">Nom <span aria-hidden="true">*</span></label>
+        <input id="add-last" type="text" formControlName="lastName" [attr.aria-invalid]="showAddError('lastName')" />
+      </div>
+    </div>
+    <div class="form__row">
+      <div class="field">
+        <label for="add-email">E-mail <span aria-hidden="true">*</span></label>
+        <input id="add-email" type="email" formControlName="email" [attr.aria-invalid]="showAddError('email')" />
+      </div>
+      <div class="field">
+        <label for="add-phone">Téléphone <span aria-hidden="true">*</span></label>
+        <input id="add-phone" type="tel" formControlName="phone" [attr.aria-invalid]="showAddError('phone')" />
+      </div>
+    </div>
+    <div class="form__row">
+      <div class="field">
+        <label for="add-licence">N° de phytolicence <small>(facultatif)</small></label>
+        <input id="add-licence" type="text" formControlName="licenceNumber" />
+      </div>
+      <div class="field">
+        <label for="add-org">Organisation <small>(facultatif)</small></label>
+        <input id="add-org" type="text" formControlName="organization" />
+      </div>
+    </div>
+    <label class="consent">
+      <input type="checkbox" formControlName="sendConfirmation" />
+      <span>Envoyer l’e-mail de confirmation à la personne</span>
+    </label>
+    <p class="form__note">La date limite d’inscription ne s’applique pas ici ; le nombre de places, si.</p>
+
+    @if (addError(); as message) {
+      <p class="form__error" role="alert">{{ message }}</p>
+    }
+
+    <div class="add-dialog__actions">
+      <button class="btn btn--outline" type="button" (click)="closeAdd()">Annuler</button>
+      <button class="btn btn--cta" type="submit" [disabled]="adding()">
+        {{ adding() ? 'Ajout…' : 'Inscrire' }}
+      </button>
+    </div>
+  </form>
+</dialog>

@@ -219,6 +219,13 @@ Les deux routes répondent `201` avec `{ "ok": true }` en cas de succès.
 - **Double confirmation (RGPD)** : un e-mail contient un lien vers `GET /newsletter/confirm?token=…`. L'inscription n'est active qu'après ce clic. Ce lien affiche lui-même une petite page HTML « Inscription confirmée ».
 - Si l'adresse est déjà inscrite, répondre quand même `201` avec `{ "ok": true }`, pour ne pas révéler qui est inscrit.
 
+## Administration
+
+Les routes `/admin/…` (connexion, actualités, envoi d'images) sont décrites dans le README du backend. Elles ne sont utilisées que par l'espace `/admin` du frontend.
+
+- **Même origine obligatoire.** La session est un cookie SameSite=Strict, donc le site et l'API doivent être servis depuis la même origine. En production, l'API est à `/api` sur le même domaine. En développement, le serveur Angular relaie `/api` vers `localhost:8000` (`proxy.conf.json`).
+- **En mode données d'exemple (`npm start`),** l'administration affiche un message : elle a besoin du backend.
+
 ## Brancher le frontend sur l'API
 
 La source des données dépend de la configuration de build (`src/environments/`) :
@@ -226,7 +233,7 @@ La source des données dépend de la configuration de build (`src/environments/`
 | Commande | Données |
 |---|---|
 | `npm start` | Fichiers JSON de `public/data` (aucun backend nécessaire) |
-| `npm run start:api` | API PHP locale sur `http://localhost:8000` |
+| `npm run start:api` | API PHP locale (`/api` relayé vers `http://localhost:8000`) |
 | `ng build` (production) | `/api` sur le même domaine |
 
 Aucun composant n'est à modifier : tous les appels passent par `src/app/core/api/api.service.ts`.

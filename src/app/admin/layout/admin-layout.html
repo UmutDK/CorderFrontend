@@ -1,0 +1,66 @@
+<a class="skip-link" href="#admin-contenu">Aller au contenu principal</a>
+
+<aside class="side">
+  <a class="side__brand" routerLink="/admin">
+    <img src="brand/corder-logo-light.svg" alt="Corder" width="112" height="40" />
+    <span>Administration</span>
+  </a>
+
+  <nav class="side__nav" aria-label="Administration">
+    <ul>
+      @for (item of nav; track item.label) {
+        <li>
+          @if (item.link) {
+            <a
+              class="side__link"
+              [routerLink]="item.link"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{ exact: item.link === '/admin' }"
+              ariaCurrentWhenActive="page"
+            >
+              <app-icon [name]="item.icon" [size]="18" />
+              {{ item.label }}
+            </a>
+          } @else {
+            <span class="side__link is-soon" aria-disabled="true">
+              <app-icon [name]="item.icon" [size]="18" />
+              {{ item.label }}
+              <small>bientôt</small>
+            </span>
+          }
+        </li>
+      }
+    </ul>
+  </nav>
+</aside>
+
+<div class="main">
+  <header class="top">
+    <a class="top__site" href="/" target="_blank" rel="noopener">
+      <app-icon name="external-link" [size]="16" />
+      Voir le site <span class="visually-hidden">(nouvel onglet)</span>
+    </a>
+
+    @if (auth.user(); as user) {
+      <div class="top__user">
+        <span class="top__avatar" aria-hidden="true">{{ user.name.charAt(0) }}</span>
+        <span class="top__name">{{ user.name }}</span>
+        <button class="top__logout" type="button" (click)="logout()">
+          <app-icon name="log-out" [size]="16" />
+          Déconnexion
+        </button>
+      </div>
+    }
+  </header>
+
+  <main id="admin-contenu" class="content" tabindex="-1">
+    <router-outlet />
+  </main>
+</div>
+
+@if (toast(); as message) {
+  <p class="admin-toast" role="status">
+    <app-icon name="check" [size]="16" />
+    {{ message }}
+  </p>
+}

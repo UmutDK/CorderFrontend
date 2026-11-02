@@ -1,0 +1,58 @@
+<main class="login">
+  <div class="card">
+    <img class="card__logo" src="brand/corder-logo.svg" alt="Corder" width="140" height="50" />
+    <h1>Administration</h1>
+    <p class="card__lead">Connectez-vous pour gérer le contenu du site.</p>
+
+    @if (!available) {
+      <p class="form__error" role="alert">
+        L’administration a besoin du backend PHP. Lancez-le, puis démarrez le site avec
+        <code>npm run start:api</code>.
+      </p>
+    } @else {
+      @if (expiree()) {
+        <p class="notice" role="status">Votre session a expiré. Reconnectez-vous pour continuer.</p>
+      }
+
+      <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="field">
+          <label for="login-email">Adresse e-mail</label>
+          <input
+            id="login-email"
+            type="email"
+            formControlName="email"
+            autocomplete="username"
+            [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+          />
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <p class="field__error">Indiquez une adresse e-mail valide.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label for="login-password">Mot de passe</label>
+          <input
+            id="login-password"
+            type="password"
+            formControlName="password"
+            autocomplete="current-password"
+            [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+          />
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <p class="field__error">Indiquez votre mot de passe.</p>
+          }
+        </div>
+
+        @if (error(); as message) {
+          <p class="form__error" role="alert">{{ message }}</p>
+        }
+
+        <button class="btn btn--cta btn--block" type="submit" [disabled]="sending()">
+          {{ sending() ? 'Connexion…' : 'Se connecter' }}
+        </button>
+      </form>
+    }
+
+    <a class="card__back" href="/">← Retour au site</a>
+  </div>
+</main>

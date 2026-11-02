@@ -1,0 +1,55 @@
+<header class="admin-head">
+  <div>
+    <h1>Bonjour {{ user()?.name?.split(' ')?.[0] }}</h1>
+    <p>Voici l’essentiel du site en un coup d’œil.</p>
+  </div>
+  <a class="btn btn--cta" routerLink="/admin/actualites/nouvelle">
+    <app-icon name="plus" [size]="18" />
+    Nouvelle actualité
+  </a>
+</header>
+
+@let s = stats();
+@switch (s.status) {
+  @case ('loading') {
+    <ul class="tiles" aria-busy="true">
+      @for (tile of tiles; track tile.key) {
+        <li class="skeleton tile--skeleton"></li>
+      }
+    </ul>
+  }
+  @case ('error') {
+    <p class="load-error">Les chiffres n’ont pas pu être chargés.</p>
+  }
+  @case ('success') {
+    <ul class="tiles">
+      @for (tile of tiles; track tile.key) {
+        <li class="tile" [attr.data-accent]="tile.accent">
+          <span class="tile__icon"><app-icon [name]="tile.icon" [size]="20" /></span>
+          <strong>{{ s.data[tile.key] }}</strong>
+          <span>{{ tile.label }}</span>
+        </li>
+      }
+    </ul>
+  }
+}
+
+<section class="shortcuts" aria-labelledby="shortcuts-title">
+  <h2 id="shortcuts-title">Raccourcis</h2>
+  <ul>
+    <li>
+      <a routerLink="/admin/actualites">
+        <app-icon name="file-text" [size]="18" />
+        Gérer les actualités et les alertes
+        <app-icon class="shortcuts__arrow" name="arrow-right" [size]="16" />
+      </a>
+    </li>
+    <li>
+      <a href="/actualites" target="_blank" rel="noopener">
+        <app-icon name="eye" [size]="18" />
+        Voir les actualités sur le site
+        <app-icon class="shortcuts__arrow" name="external-link" [size]="16" />
+      </a>
+    </li>
+  </ul>
+</section>

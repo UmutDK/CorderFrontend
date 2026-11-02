@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
-import { SiteHeader } from './core/layout/site-header/site-header';
-import { SiteFooter } from './core/layout/site-footer/site-footer';
-
+/** Racine : le cadre (site public ou administration) est choisi par les routes */
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SiteHeader, SiteFooter],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+  imports: [RouterOutlet],
+  template: '<router-outlet />',
 })
 export class App {}

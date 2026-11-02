@@ -1,0 +1,258 @@
+<a class="admin-back" routerLink="/admin/actualites">← Toutes les actualités</a>
+
+<header class="admin-head">
+  <div>
+    <h1>{{ isNew() ? 'Nouvelle actualité' : 'Modifier l’actualité' }}</h1>
+    @if (saved(); as a) {
+      <p class="admin-head__meta">
+        <span class="admin-status admin-status--{{ a.status }}">{{ statusLabels[a.status] }}</span>
+        @if (a.status === 'published') {
+          <a class="admin-view-link" [href]="'/actualites/' + a.slug" target="_blank" rel="noopener">
+            Voir sur le site <app-icon name="external-link" [size]="14" />
+          </a>
+        }
+      </p>
+    }
+  </div>
+</header>
+
+@if (loading()) {
+  <div class="skeleton admin-edit-skeleton" aria-busy="true"></div>
+} @else if (loadError()) {
+  <p class="load-error">
+    Cette actualité est introuvable ou n’a pas pu être chargée.
+    <a routerLink="/admin/actualites">Retour à la liste</a>
+  </p>
+} @else {
+  <form class="admin-edit" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <!-- ---------- Contenu ---------- -->
+    <div class="admin-edit__main">
+      <section class="admin-card form" aria-label="Contenu">
+        <div class="field">
+          <label for="a-title">Titre <span aria-hidden="true">*</span></label>
+          <input
+            id="a-title"
+            class="admin-title-input"
+            type="text"
+            formControlName="title"
+            maxlength="255"
+            [attr.aria-invalid]="showError('title')"
+            aria-describedby="a-title-err"
+          />
+          <p id="a-title-err" class="field__error">
+            @if (showError('title')) {
+              {{ serverError('title') ?? 'Le titre est obligatoire.' }}
+            }
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="a-slug">Adresse de la page <small>(facultatif)</small></label>
+          <div class="slug">
+            <span class="slug__prefix">corder.be/actualites/</span>
+            <input
+              id="a-slug"
+              type="text"
+              formControlName="slug"
+              [placeholder]="autoSlug() || 'generee-depuis-le-titre'"
+              [attr.aria-invalid]="showError('slug')"
+              aria-describedby="a-slug-help a-slug-err"
+            />
+          </div>
+          <p id="a-slug-help" class="form__note">
+            Laissez vide pour la créer à partir du titre. Évitez de la changer une fois l’article publié :
+            les liens déjà partagés ne fonctionneraient plus.
+          </p>
+          <p id="a-slug-err" class="field__error">
+            @if (showError('slug')) {
+              {{ serverError('slug') ?? 'Lettres minuscules, chiffres et tirets uniquement.' }}
+            }
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="a-excerpt">Résumé <span aria-hidden="true">*</span></label>
+          <textarea
+            id="a-excerpt"
+            rows="3"
+            formControlName="excerpt"
+            maxlength="500"
+            [attr.aria-invalid]="showError('excerpt')"
+            aria-describedby="a-excerpt-help a-excerpt-err"
+          ></textarea>
+          <p id="a-excerpt-help" class="form__note">
+            Une ou deux phrases, affichées sur les cartes et en introduction de l’article.
+            {{ form.controls.excerpt.value.length }}/500
+          </p>
+          <p id="a-excerpt-err" class="field__error">
+            @if (showError('excerpt')) {
+              {{ serverError('excerpt') ?? 'Le résumé est obligatoire.' }}
+            }
+          </p>
+        </div>
+
+        <div class="field">
+          <span id="a-body-label" class="admin-field-label">Contenu <span aria-hidden="true">*</span></span>
+          <app-rich-text-editor formControlName="body" labelledBy="a-body-label" [invalid]="showError('body')" />
+          <p class="field__error">
+            @if (showError('body')) {
+              {{ serverError('body') ?? 'Le contenu est obligatoire.' }}
+            }
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ---------- Colonne de droite ---------- -->
+    <div class="admin-edit__side">
+      <section class="admin-card" aria-labelledby="pub-title">
+        <h2 id="pub-title">Publication</h2>
+        <div class="admin-choices" role="radiogroup" aria-labelledby="pub-title">
+          <label class="admin-choice">
+            <input type="radio" formControlName="publish" value="draft" />
+            <span>
+              <strong>Brouillon</strong>
+              <small>Invisible sur le site</small>
+            </span>
+          </label>
+          <label class="admin-choice">
+            <input type="radio" formControlName="publish" value="publish" />
+            <span>
+              <strong>Publier</strong>
+              <small>Visible sur le site à la date choisie</small>
+            </span>
+          </label>
+        </div>
+
+        @if (form.controls.publish.value === 'publish') {
+          <div class="field">
+            <label for="a-date">Date de publication</label>
+            <input id="a-date" type="datetime-local" formControlName="publishedAt" aria-describedby="a-date-help" />
+            <p id="a-date-help" class="form__note">
+              @if (nextStatus() === 'scheduled') {
+                Date future : l’article apparaîtra automatiquement à ce moment-là.
+              } @else {
+                Date affichée sur l’article.
+              }
+            </p>
+            @if (serverError('publishedAt'); as message) {
+              <p class="field__error">{{ message }}</p>
+            }
+          </div>
+        }
+
+        @if (formError(); as message) {
+          <p class="form__error" role="alert">{{ message }}</p>
+        }
+
+        <button class="btn btn--cta btn--block" type="submit" [disabled]="saving() || uploading()">
+          @if (saving()) {
+            Enregistrement…
+          } @else {
+            @switch (nextStatus()) {
+              @case ('draft') {
+                Enregistrer le brouillon
+              }
+              @case ('scheduled') {
+                Programmer la publication
+              }
+              @default {
+                {{ saved()?.status === 'published' ? 'Enregistrer les modifications' : 'Publier' }}
+              }
+            }
+          }
+        </button>
+      </section>
+
+      <section class="admin-card form" aria-labelledby="class-title">
+        <h2 id="class-title">Classement</h2>
+
+        <div class="field">
+          <label for="a-category">Catégorie <span aria-hidden="true">*</span></label>
+          <select
+            id="a-category"
+            formControlName="categoryId"
+            [attr.aria-invalid]="showError('categoryId')"
+            aria-describedby="a-category-err"
+          >
+            <option [ngValue]="null" disabled>Choisir…</option>
+            @for (c of categories(); track c.id) {
+              <option [ngValue]="c.id">{{ c.label }}</option>
+            }
+          </select>
+          <p id="a-category-err" class="field__error">
+            @if (showError('categoryId')) {
+              {{ serverError('categoryId') ?? 'Choisissez une catégorie.' }}
+            }
+          </p>
+        </div>
+
+        @if (isAlert()) {
+          <div class="field">
+            <label for="a-level">Niveau d’alerte</label>
+            <select id="a-level" formControlName="alertLevel">
+              <option value="info">Information</option>
+              <option value="urgent">Urgent (échéance, retrait)</option>
+            </select>
+          </div>
+        }
+
+        <div class="field">
+          <label for="a-pole">Pôle lié</label>
+          <select id="a-pole" formControlName="pole" aria-describedby="a-pole-help">
+            <option [ngValue]="null">{{ isAlert() ? 'Cellule CRP (par défaut)' : 'Aucun' }}</option>
+            @for (p of poles; track p.value) {
+              <option [ngValue]="p.value">{{ p.label }}</option>
+            }
+          </select>
+          <p id="a-pole-help" class="form__note">Détermine la couleur de l’article sur le site.</p>
+        </div>
+
+        @if (!isAlert()) {
+          <label class="consent">
+            <input type="checkbox" formControlName="featured" />
+            <span>
+              <strong>Mettre à la une</strong> sur la page d’accueil
+              <small class="admin-block">Remplace l’article actuellement à la une.</small>
+            </span>
+          </label>
+        }
+      </section>
+
+      <section class="admin-card form" aria-labelledby="img-title">
+        <h2 id="img-title">Image</h2>
+
+        @if (form.controls.imageUrl.value; as url) {
+          <img class="preview" [src]="url" alt="" />
+          <div class="field">
+            <label for="a-alt">Description de l’image</label>
+            <input id="a-alt" type="text" formControlName="imageAlt" aria-describedby="a-alt-help" />
+            <p id="a-alt-help" class="form__note">
+              Lue par les lecteurs d’écran. Laissez vide si l’image est purement décorative.
+            </p>
+          </div>
+          <button class="admin-ghost admin-ghost--danger" type="button" (click)="removeImage()">
+            <app-icon name="trash" [size]="16" />
+            Retirer l’image
+          </button>
+        } @else {
+          <label class="upload" [class.is-busy]="uploading()">
+            <input
+              class="visually-hidden"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              [disabled]="uploading()"
+              (change)="onImageSelected($event)"
+            />
+            <app-icon [name]="uploading() ? 'clock' : 'upload'" [size]="22" />
+            <strong>{{ uploading() ? 'Envoi en cours…' : 'Choisir une image' }}</strong>
+            <small>JPEG, PNG ou WebP · 5 Mo maximum</small>
+          </label>
+        }
+        @if (serverError('imageUrl'); as message) {
+          <p class="field__error" role="alert">{{ message }}</p>
+        }
+      </section>
+    </div>
+  </form>
+}

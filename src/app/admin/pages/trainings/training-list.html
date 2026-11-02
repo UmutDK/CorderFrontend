@@ -1,0 +1,162 @@
+<header class="admin-head">
+  <div>
+    <h1>Formations</h1>
+    <p>Sessions affichées dans l’agenda du site, et leurs inscriptions.</p>
+  </div>
+  <a class="btn btn--cta" routerLink="nouvelle">
+    <app-icon name="plus" [size]="18" />
+    Nouvelle formation
+  </a>
+</header>
+
+<div class="admin-filters">
+  <div class="tabs" role="group" aria-label="Période">
+    <button class="chip" type="button" [attr.aria-pressed]="period() === 'upcoming'" (click)="period.set('upcoming')">
+      À venir <span class="tabs__count">{{ counts().upcoming }}</span>
+    </button>
+    <button class="chip" type="button" [attr.aria-pressed]="period() === 'past'" (click)="period.set('past')">
+      Passées <span class="tabs__count">{{ counts().past }}</span>
+    </button>
+  </div>
+  <div class="field admin-filters__search">
+    <label for="training-q" class="visually-hidden">Rechercher</label>
+    <app-icon name="search" [size]="18" />
+    <input
+      id="training-q"
+      type="search"
+      placeholder="Rechercher un titre, un lieu, un type (P2…)"
+      [value]="query()"
+      (input)="query.set($any($event.target).value)"
+    />
+  </div>
+</div>
+
+@let s = state();
+@switch (s.status) {
+  @case ('loading') {
+    <div class="skeleton admin-list-skeleton" aria-busy="true"></div>
+  }
+  @case ('error') {
+    <p class="load-error">La liste n’a pas pu être chargée.</p>
+  }
+  @case ('success') {
+    @if (rows().length) {
+      <div class="admin-card admin-table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Formation</th>
+              <th scope="col">Inscrits</th>
+              <th scope="col">Statut</th>
+              <th scope="col"><span class="visually-hidden">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (t of rows(); track t.id) {
+              <tr>
+                <td class="admin-table__date">
+                  <strong class="date">{{ t.startsAt | date: 'EEE d MMM y' }}</strong>
+                  {{ t.startsAt | date: "H'h'mm" }} – {{ t.endsAt | date: "H'h'mm" }}
+                </td>
+                <td class="admin-table__title">
+                  <a [routerLink]="[t.id]">{{ t.title }}</a>
+                  <span class="admin-table__meta">{{ t.location }} · {{ t.licenceType }}</span>
+                </td>
+                <td>
+                  <a
+                    class="fill"
+                    routerLink="/admin/inscriptions"
+                    [queryParams]="{ formation: t.id }"
+                    [attr.aria-label]="t.registered + ' inscrits sur ' + t.capacity + ' places, voir la liste'"
+                  >
+                    <span class="fill__text">
+                      <strong>{{ t.registered }}</strong> / {{ t.capacity }}
+                      @if (t.registered >= t.capacity) {
+                        <em>complet</em>
+                      }
+                    </span>
+                    <span class="fill__bar" aria-hidden="true">
+                      <span [style.width.%]="fillPercent(t)" [class.is-full]="t.registered >= t.capacity"></span>
+                    </span>
+                  </a>
+                </td>
+                <td>
+                  @if (!t.isPublished) {
+                    <span class="admin-status admin-status--draft">Masquée</span>
+                  } @else if (period() === 'past') {
+                    <span class="admin-status admin-status--draft">Terminée</span>
+                  } @else if (isClosed(t)) {
+                    <span class="admin-status admin-status--scheduled">Inscriptions closes</span>
+                  } @else {
+                    <span class="admin-status admin-status--published">Inscriptions ouvertes</span>
+                  }
+                </td>
+                <td class="admin-table__actions">
+                  <a
+                    class="admin-ghost"
+                    routerLink="/admin/inscriptions"
+                    [queryParams]="{ formation: t.id }"
+                    [attr.aria-label]="'Inscrits à « ' + t.title + ' »'"
+                    title="Voir les inscrits"
+                  >
+                    <app-icon name="users" [size]="17" />
+                  </a>
+                  <a
+                    class="admin-ghost"
+                    routerLink="nouvelle"
+                    [queryParams]="{ copie: t.id }"
+                    [attr.aria-label]="'Dupliquer « ' + t.title + ' »'"
+                    title="Dupliquer (nouvelle session)"
+                  >
+                    <app-icon name="plus" [size]="17" />
+                  </a>
+                  <a
+                    class="admin-ghost"
+                    [routerLink]="[t.id]"
+                    [attr.aria-label]="'Modifier « ' + t.title + ' »'"
+                    title="Modifier"
+                  >
+                    <app-icon name="pencil" [size]="17" />
+                  </a>
+                  <button
+                    class="admin-ghost admin-ghost--danger"
+                    type="button"
+                    [attr.aria-label]="'Supprimer « ' + t.title + ' »'"
+                    title="Supprimer"
+                    (click)="askDelete(t)"
+                  >
+                    <app-icon name="trash" [size]="17" />
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="load-error">
+        {{ query() ? 'Aucune formation ne correspond à cette recherche.' : 'Aucune formation dans cette période.' }}
+      </p>
+    }
+  }
+}
+
+<app-confirm-dialog
+  heading="Supprimer cette formation ?"
+  [busy]="deleting()"
+  [canConfirm]="!toDelete()?.registered"
+  (confirmed)="confirmDelete()"
+  (closed)="toDelete.set(null)"
+>
+  @if (toDelete(); as t) {
+    @if (t.registered > 0) {
+      <p>
+        « {{ t.title }} » compte {{ t.registered }} inscrit{{ t.registered > 1 ? 's' : '' }} : elle ne peut pas
+        être supprimée. Annulez d’abord les inscriptions, ou masquez la formation depuis sa fiche.
+      </p>
+    } @else {
+      <p>« {{ t.title }} » sera retirée de l’agenda et supprimée définitivement.</p>
+    }
+  }
+</app-confirm-dialog>

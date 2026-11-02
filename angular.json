@@ -33,7 +33,8 @@
               "src/styles/tokens.css",
               "src/styles/base.css",
               "src/styles/forms.css",
-              "src/styles/prose.css"
+              "src/styles/prose.css",
+              "src/styles/admin.css"
             ]
           },
           "configurations": {
@@ -87,7 +88,8 @@
               "buildTarget": "frontend:build:development"
             },
             "local-api": {
-              "buildTarget": "frontend:build:local-api"
+              "buildTarget": "frontend:build:local-api",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

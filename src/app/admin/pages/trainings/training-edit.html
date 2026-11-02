@@ -1,0 +1,289 @@
+<a class="admin-back" routerLink="/admin/formations">← Toutes les formations</a>
+
+<header class="admin-head">
+  <div>
+    <h1>{{ isNew() ? 'Nouvelle formation' : 'Modifier la formation' }}</h1>
+    @if (saved(); as t) {
+      <p class="admin-head__meta">
+        <span class="admin-status" [class]="t.isPublished ? 'admin-status--published' : 'admin-status--draft'">
+          {{ t.isPublished ? 'Visible dans l’agenda' : 'Masquée' }}
+        </span>
+        @if (t.isPublished) {
+          <a class="admin-view-link" [href]="'/formations/' + t.slug" target="_blank" rel="noopener">
+            Voir sur le site <app-icon name="external-link" [size]="14" />
+          </a>
+        }
+        <a class="admin-view-link" routerLink="/admin/inscriptions" [queryParams]="{ formation: t.id }">
+          {{ t.registered }} inscrit{{ t.registered > 1 ? 's' : '' }} sur {{ t.capacity }}
+        </a>
+      </p>
+    }
+  </div>
+</header>
+
+@if (copiedFrom(); as title) {
+  <p class="notice" role="status">
+    Nouvelle session copiée de « {{ title }} ». Choisissez la date, vérifiez le reste puis enregistrez.
+    Elle reste masquée tant que vous ne cochez pas « Visible dans l’agenda ».
+  </p>
+}
+
+@if (loading()) {
+  <div class="skeleton admin-edit-skeleton" aria-busy="true"></div>
+} @else if (loadError()) {
+  <p class="load-error">
+    Cette formation est introuvable ou n’a pas pu être chargée.
+    <a routerLink="/admin/formations">Retour à la liste</a>
+  </p>
+} @else {
+  <form class="admin-edit" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div class="admin-edit__main">
+      <!-- ---------- Présentation ---------- -->
+      <section class="admin-card form" aria-labelledby="sec-info">
+        <h2 id="sec-info">Présentation</h2>
+
+        <div class="field">
+          <label for="t-title">Titre <span aria-hidden="true">*</span></label>
+          <input id="t-title" class="admin-title-input" type="text" formControlName="title" maxlength="255"
+            [attr.aria-invalid]="showError('title')" aria-describedby="t-title-err" />
+          <p id="t-title-err" class="field__error">
+            @if (showError('title')) { {{ serverError('title') ?? 'Le titre est obligatoire.' }} }
+          </p>
+        </div>
+
+        <div class="form__row">
+          <div class="field">
+            <label for="t-licence">Type de phytolicence <span aria-hidden="true">*</span></label>
+            <select id="t-licence" formControlName="licenceType" [attr.aria-invalid]="showError('licenceType')"
+              aria-describedby="t-licence-err">
+              <option [ngValue]="null" disabled>Choisir…</option>
+              @for (l of licences; track l.code) {
+                <option [ngValue]="l.code">{{ l.code }} — {{ l.label }}</option>
+              }
+            </select>
+            <p id="t-licence-err" class="field__error">
+              @if (showError('licenceType')) { {{ serverError('licenceType') ?? 'Choisissez un type.' }} }
+            </p>
+          </div>
+
+          <div class="field">
+            <label for="t-slug">Adresse de la page <small>(facultatif)</small></label>
+            <input id="t-slug" type="text" formControlName="slug" placeholder="générée depuis le titre et la date"
+              [attr.aria-invalid]="showError('slug')" aria-describedby="t-slug-err" />
+            <p id="t-slug-err" class="field__error">
+              @if (showError('slug')) { {{ serverError('slug') ?? 'Lettres minuscules, chiffres et tirets.' }} }
+            </p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="t-summary">Accroche <span aria-hidden="true">*</span></label>
+          <textarea id="t-summary" rows="2" formControlName="summary" maxlength="500"
+            [attr.aria-invalid]="showError('summary')" aria-describedby="t-summary-help t-summary-err"></textarea>
+          <p id="t-summary-help" class="form__note">Une ou deux phrases, affichées sous le titre de la fiche.</p>
+          <p id="t-summary-err" class="field__error">
+            @if (showError('summary')) { {{ serverError('summary') ?? 'L’accroche est obligatoire.' }} }
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="t-audience">Public visé <span aria-hidden="true">*</span></label>
+          <textarea id="t-audience" rows="2" formControlName="audience" maxlength="500"
+            [attr.aria-invalid]="showError('audience')" aria-describedby="t-audience-err"></textarea>
+          <p id="t-audience-err" class="field__error">
+            @if (showError('audience')) { {{ serverError('audience') ?? 'Le public visé est obligatoire.' }} }
+          </p>
+        </div>
+      </section>
+
+      <!-- ---------- Date et lieu ---------- -->
+      <section class="admin-card form" aria-labelledby="sec-when">
+        <h2 id="sec-when">Date et lieu</h2>
+
+        <div class="when">
+          <div class="field">
+            <label for="t-date">Date <span aria-hidden="true">*</span></label>
+            <input id="t-date" type="date" formControlName="date" [attr.aria-invalid]="showError('date')"
+              aria-describedby="t-date-err" />
+          </div>
+          <div class="field">
+            <label for="t-start">Début</label>
+            <input id="t-start" type="time" formControlName="startTime" />
+          </div>
+          <div class="field">
+            <label for="t-end">Fin</label>
+            <input id="t-end" type="time" formControlName="endTime" [attr.aria-invalid]="showError('endTime')"
+              aria-describedby="t-date-err" />
+          </div>
+        </div>
+        <p id="t-date-err" class="field__error">
+          @if (showError('date')) { {{ serverError('date') ?? 'Choisissez la date.' }} }
+          @if (serverError('endTime'); as message) { {{ message }} }
+        </p>
+
+        <div class="field">
+          <label for="t-deadline">Clôture des inscriptions <span aria-hidden="true">*</span></label>
+          <input id="t-deadline" class="short" type="date" formControlName="deadline"
+            [attr.aria-invalid]="showError('deadline')" aria-describedby="t-deadline-help t-deadline-err" />
+          <p id="t-deadline-help" class="form__note">
+            Jusqu’à 23 h 59 ce jour-là. Proposée automatiquement 5 jours avant la formation.
+          </p>
+          <p id="t-deadline-err" class="field__error">
+            @if (showError('deadline')) { {{ serverError('deadline') ?? 'Choisissez une date.' }} }
+          </p>
+        </div>
+
+        <div class="admin-choices" role="radiogroup" aria-label="Format">
+          <label class="admin-choice">
+            <input type="radio" formControlName="mode" value="onsite" />
+            <span><strong>En présentiel</strong><small>Dans une salle</small></span>
+          </label>
+          <label class="admin-choice">
+            <input type="radio" formControlName="mode" value="online" />
+            <span><strong>En ligne</strong><small>Visioconférence</small></span>
+          </label>
+        </div>
+
+        @if (isOnline()) {
+          <div class="field">
+            <label for="t-url">Lien de connexion <small>(facultatif)</small></label>
+            <input id="t-url" type="url" formControlName="onlineUrl" placeholder="https://…"
+              [attr.aria-invalid]="showError('onlineUrl')" aria-describedby="t-url-help t-url-err" />
+            <p id="t-url-help" class="form__note">Envoyé uniquement dans l’e-mail de confirmation, jamais affiché sur le site.</p>
+            <p id="t-url-err" class="field__error">
+              @if (showError('onlineUrl')) { {{ serverError('onlineUrl') ?? 'Adresse commençant par https://' }} }
+            </p>
+          </div>
+        } @else {
+          <div class="form__row">
+            <div class="field">
+              <label for="t-location">Ville <span aria-hidden="true">*</span></label>
+              <input id="t-location" type="text" formControlName="location" placeholder="Gembloux"
+                [attr.aria-invalid]="showError('location')" aria-describedby="t-location-help t-location-err" />
+              <p id="t-location-help" class="form__note">Affichée dans l’agenda et utilisée pour le filtre par lieu.</p>
+              <p id="t-location-err" class="field__error">
+                @if (showError('location')) { {{ serverError('location') ?? 'La ville est obligatoire.' }} }
+              </p>
+            </div>
+            <div class="field">
+              <label for="t-venue">Nom du lieu <span aria-hidden="true">*</span></label>
+              <input id="t-venue" type="text" formControlName="venueName" placeholder="Centre de formation…"
+                [attr.aria-invalid]="showError('venueName')" aria-describedby="t-venue-err" />
+              <p id="t-venue-err" class="field__error">
+                @if (showError('venueName')) { {{ serverError('venueName') ?? 'Le lieu est obligatoire.' }} }
+              </p>
+            </div>
+          </div>
+          <div class="field">
+            <label for="t-address">Adresse <small>(facultatif)</small></label>
+            <input id="t-address" type="text" formControlName="venueAddress" />
+          </div>
+        }
+      </section>
+
+      <!-- ---------- Objectifs ---------- -->
+      <section class="admin-card" aria-labelledby="sec-obj">
+        <h2 id="sec-obj">Objectifs</h2>
+        <ol class="rows" formArrayName="objectives">
+          @for (control of form.controls.objectives.controls; track control; let i = $index) {
+            <li class="row">
+              <label class="visually-hidden" [for]="'t-obj-' + i">Objectif {{ i + 1 }}</label>
+              <input class="row__input" [id]="'t-obj-' + i" type="text" [formControlName]="i" maxlength="300"
+                placeholder="Ex. : Connaître la réglementation en vigueur" />
+              <button class="admin-ghost admin-ghost--danger" type="button" (click)="removeObjective(i)"
+                [attr.aria-label]="'Retirer l’objectif ' + (i + 1)" title="Retirer">
+                <app-icon name="x" [size]="16" />
+              </button>
+            </li>
+          }
+        </ol>
+        @if (serverError('objectives'); as message) {
+          <p class="field__error">{{ message }}</p>
+        }
+        <button class="admin-ghost add" type="button" (click)="addObjective()">
+          <app-icon name="plus" [size]="16" /> Ajouter un objectif
+        </button>
+      </section>
+
+      <!-- ---------- Programme ---------- -->
+      <section class="admin-card" aria-labelledby="sec-prog">
+        <h2 id="sec-prog">Programme</h2>
+        <ol class="rows" formArrayName="program">
+          @for (step of form.controls.program.controls; track step; let i = $index, first = $first, last = $last) {
+            <li class="row" [formGroupName]="i">
+              <label class="visually-hidden" [for]="'t-step-time-' + i">Heure de l’étape {{ i + 1 }}</label>
+              <input class="row__time" [id]="'t-step-time-' + i" type="text" formControlName="time" placeholder="9h00" />
+              <label class="visually-hidden" [for]="'t-step-' + i">Intitulé de l’étape {{ i + 1 }}</label>
+              <input class="row__input" [id]="'t-step-' + i" type="text" formControlName="title"
+                placeholder="Ex. : Accueil et tour de table" />
+              <span class="row__tools">
+                <button class="admin-ghost" type="button" [disabled]="first" (click)="moveStep(i, -1)"
+                  [attr.aria-label]="'Monter l’étape ' + (i + 1)" title="Monter">↑</button>
+                <button class="admin-ghost" type="button" [disabled]="last" (click)="moveStep(i, 1)"
+                  [attr.aria-label]="'Descendre l’étape ' + (i + 1)" title="Descendre">↓</button>
+                <button class="admin-ghost admin-ghost--danger" type="button" (click)="removeStep(i)"
+                  [attr.aria-label]="'Retirer l’étape ' + (i + 1)" title="Retirer">
+                  <app-icon name="x" [size]="16" />
+                </button>
+              </span>
+            </li>
+          }
+        </ol>
+        @if (serverError('program'); as message) {
+          <p class="field__error">{{ message }}</p>
+        }
+        <button class="admin-ghost add" type="button" (click)="addStep()">
+          <app-icon name="plus" [size]="16" /> Ajouter une étape
+        </button>
+      </section>
+    </div>
+
+    <!-- ---------- Colonne de droite ---------- -->
+    <div class="admin-edit__side">
+      <section class="admin-card form" aria-labelledby="sec-pub">
+        <h2 id="sec-pub">Inscriptions</h2>
+
+        <div class="form__row form__row--tight">
+          <div class="field">
+            <label for="t-price">Prix (€)</label>
+            <input id="t-price" type="number" min="0" step="0.5" formControlName="price"
+              [attr.aria-invalid]="showError('price')" aria-describedby="t-price-err" />
+          </div>
+          <div class="field">
+            <label for="t-capacity">Places</label>
+            <input id="t-capacity" type="number" min="1" step="1" formControlName="capacity"
+              [attr.aria-invalid]="showError('capacity')" aria-describedby="t-capacity-err" />
+          </div>
+        </div>
+        <p id="t-price-err" class="field__error">
+          @if (showError('price')) { {{ serverError('price') ?? 'Prix invalide (0 = gratuit).' }} }
+        </p>
+        <p id="t-capacity-err" class="field__error">
+          @if (showError('capacity')) { {{ serverError('capacity') ?? 'Au moins 1 place.' }} }
+        </p>
+
+        <label class="consent">
+          <input type="checkbox" formControlName="isPublished" />
+          <span>
+            <strong>Visible dans l’agenda</strong> du site
+            <small class="admin-block">Décochez pour masquer la formation sans la supprimer.</small>
+          </span>
+        </label>
+
+        @if (formError(); as message) {
+          <p class="form__error" role="alert">{{ message }}</p>
+        }
+
+        <button class="btn btn--cta btn--block" type="submit" [disabled]="saving()">
+          {{ saving() ? 'Enregistrement…' : isNew() ? 'Créer la formation' : 'Enregistrer les modifications' }}
+        </button>
+
+        @if (saved(); as t) {
+          <a class="admin-ghost duplicate" routerLink="/admin/formations/nouvelle" [queryParams]="{ copie: t.id }">
+            <app-icon name="plus" [size]="16" /> Dupliquer pour une nouvelle session
+          </a>
+        }
+      </section>
+    </div>
+  </form>
+}

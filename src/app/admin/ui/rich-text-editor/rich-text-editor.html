@@ -1,0 +1,50 @@
+<div class="rte__toolbar" role="toolbar" aria-label="Mise en forme">
+  @for (group of toolbar; track $index) {
+    <div class="rte__group">
+      @for (button of group; track button.command) {
+        <button
+          class="rte__btn"
+          type="button"
+          [attr.aria-label]="button.label"
+          [title]="button.label"
+          [attr.aria-pressed]="active().has(button.command)"
+          [disabled]="disabled()"
+          (mousedown)="$event.preventDefault()"
+          (click)="run(button.command)"
+        >
+          @if (button.icon) {
+            <app-icon [name]="button.icon" [size]="17" />
+          } @else {
+            <span class="rte__text">{{ button.text }}</span>
+          }
+        </button>
+      }
+    </div>
+  }
+  <div class="rte__group rte__group--end">
+    <button
+      class="rte__btn"
+      type="button"
+      aria-label="Annuler"
+      title="Annuler (Ctrl+Z)"
+      [disabled]="disabled() || !canUndo()"
+      (mousedown)="$event.preventDefault()"
+      (click)="undo()"
+    >
+      <app-icon name="undo" [size]="17" />
+    </button>
+    <button
+      class="rte__btn"
+      type="button"
+      aria-label="Rétablir"
+      title="Rétablir (Ctrl+Y)"
+      [disabled]="disabled() || !canRedo()"
+      (mousedown)="$event.preventDefault()"
+      (click)="redo()"
+    >
+      <app-icon name="redo" [size]="17" />
+    </button>
+  </div>
+</div>
+
+<div #content class="rte__content"></div>

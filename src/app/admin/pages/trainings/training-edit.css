@@ -1,0 +1,86 @@
+.notice {
+  margin-bottom: 1.5rem;
+  padding: 0.875rem 1.125rem;
+  border-radius: var(--r-sm);
+  background: var(--c-teal-50);
+  color: var(--c-teal-600);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* Date, début, fin sur une ligne */
+.when {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.short {
+  max-width: 14rem;
+}
+
+/* Listes éditables : objectifs et programme */
+.rows {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.row input {
+  height: 2.625rem;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  font: inherit;
+}
+
+.row input:focus {
+  outline: none;
+  border-color: var(--c-navy-800);
+  box-shadow: 0 0 0 4px var(--c-navy-100);
+}
+
+.row__time {
+  flex: 0 0 5.5rem;
+  min-width: 0;
+}
+
+.row__input {
+  flex: 1;
+  min-width: 0;
+}
+
+.row__tools {
+  display: flex;
+}
+
+.row__tools .admin-ghost:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.add {
+  color: var(--brand);
+}
+
+.form__row--tight {
+  grid-template-columns: 1fr 1fr;
+}
+
+.form__row--tight + .field__error:empty,
+.form__row--tight + .field__error + .field__error:empty {
+  display: none;
+}
+
+.duplicate {
+  justify-content: center;
+  margin-top: 0.25rem;
+}

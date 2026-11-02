@@ -1,0 +1,81 @@
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: 1rem;
+  margin: 0 0 2.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.tile {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-card);
+}
+
+.tile--skeleton {
+  height: 8.5rem;
+  border-radius: var(--r-md);
+}
+
+.tile__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 0.5rem;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tile strong {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.tile span:last-child {
+  color: var(--text-soft);
+  font-size: var(--fs-sm);
+}
+
+.shortcuts h2 {
+  margin-bottom: 1rem;
+  font-size: 1.125rem;
+}
+
+.shortcuts ul {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 34rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shortcuts a {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  background: var(--surface-card);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+
+.shortcuts a:hover {
+  border-color: var(--c-navy-800);
+}
+
+.shortcuts__arrow {
+  margin-left: auto;
+  color: var(--text-muted);
+}

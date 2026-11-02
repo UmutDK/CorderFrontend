@@ -1,0 +1,135 @@
+<header class="admin-head">
+  <div>
+    <h1>Actualités</h1>
+    <p>Articles et alertes réglementaires publiés sur le site.</p>
+  </div>
+  <a class="btn btn--cta" routerLink="nouvelle">
+    <app-icon name="plus" [size]="18" />
+    Nouvelle actualité
+  </a>
+</header>
+
+<div class="admin-filters">
+  <div class="field admin-filters__search">
+    <label for="article-q" class="visually-hidden">Rechercher</label>
+    <app-icon name="search" [size]="18" />
+    <input
+      id="article-q"
+      type="search"
+      placeholder="Rechercher un titre ou une catégorie"
+      [value]="query()"
+      (input)="query.set($any($event.target).value)"
+    />
+  </div>
+  <div class="field">
+    <label for="article-status" class="visually-hidden">Statut</label>
+    <select id="article-status" [value]="status()" (change)="status.set($any($event.target).value)">
+      <option value="">Tous les statuts</option>
+      <option value="published">Publiées</option>
+      <option value="scheduled">Programmées</option>
+      <option value="draft">Brouillons</option>
+    </select>
+  </div>
+</div>
+
+@let s = state();
+@switch (s.status) {
+  @case ('loading') {
+    <div class="skeleton admin-list-skeleton" aria-busy="true"></div>
+  }
+  @case ('error') {
+    <p class="load-error">La liste n’a pas pu être chargée.</p>
+  }
+  @case ('success') {
+    <p class="admin-count" role="status">
+      {{ rows().length }} {{ rows().length > 1 ? 'actualités' : 'actualité' }}
+      @if (rows().length !== s.data.length) {
+        sur {{ s.data.length }}
+      }
+    </p>
+
+    @if (rows().length) {
+      <div class="admin-card admin-table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th scope="col">Titre</th>
+              <th scope="col">Statut</th>
+              <th scope="col">Publication</th>
+              <th scope="col"><span class="visually-hidden">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (a of rows(); track a.id) {
+              <tr>
+                <td class="admin-table__title">
+                  <a [routerLink]="[a.id]">{{ a.title }}</a>
+                  <span class="admin-table__meta">
+                    {{ a.category.label }}
+                    @if (a.alertLevel === 'urgent') {
+                      · <strong class="urgent">urgent</strong>
+                    }
+                    @if (a.featured) {
+                      · <strong>à la une</strong>
+                    }
+                  </span>
+                </td>
+                <td>
+                  <span class="admin-status admin-status--{{ a.status }}">{{ statusLabels[a.status] }}</span>
+                </td>
+                <td class="admin-table__date">
+                  {{ a.publishedAt ? (a.publishedAt | date: 'd MMM y, HH:mm') : '—' }}
+                </td>
+                <td class="admin-table__actions">
+                  @if (a.status === 'published') {
+                    <a
+                      class="admin-ghost"
+                      [href]="'/actualites/' + a.slug"
+                      target="_blank"
+                      rel="noopener"
+                      [attr.aria-label]="'Voir « ' + a.title + ' » sur le site (nouvel onglet)'"
+                      title="Voir sur le site"
+                    >
+                      <app-icon name="eye" [size]="17" />
+                    </a>
+                  }
+                  <a
+                    class="admin-ghost"
+                    [routerLink]="[a.id]"
+                    [attr.aria-label]="'Modifier « ' + a.title + ' »'"
+                    title="Modifier"
+                  >
+                    <app-icon name="pencil" [size]="17" />
+                  </a>
+                  <button
+                    class="admin-ghost admin-ghost--danger"
+                    type="button"
+                    [attr.aria-label]="'Supprimer « ' + a.title + ' »'"
+                    title="Supprimer"
+                    (click)="askDelete(a)"
+                  >
+                    <app-icon name="trash" [size]="17" />
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="load-error">Aucune actualité ne correspond à ces critères.</p>
+    }
+  }
+}
+
+<app-confirm-dialog
+  heading="Supprimer cette actualité ?"
+  [busy]="deleting()"
+  (confirmed)="confirmDelete()"
+  (closed)="toDelete.set(null)"
+>
+  <p>
+    « {{ toDelete()?.title }} » sera retirée du site et supprimée définitivement.
+    Pour la masquer sans la perdre, repassez-la plutôt en brouillon.
+  </p>
+</app-confirm-dialog>
